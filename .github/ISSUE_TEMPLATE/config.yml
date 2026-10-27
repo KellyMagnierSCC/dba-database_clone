@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: How we work on the DBA database in GitHub
+    url: https://github.com/SurreyCountyCouncil/dba-database/blob/main/docs/how-to/00_github-workflow.md
+    about: Read this before raising an issue. It covers the issue → branch → pull request → deploy flow.
+  - name: Contributing - first-time setup
+    url: https://github.com/SurreyCountyCouncil/dba-database/blob/main/CONTRIBUTING.md
+    about: What to install and configure before your first change.

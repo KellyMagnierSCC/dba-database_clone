@@ -1,0 +1,53 @@
+name: "Change a table (migration)"
+description: Add, change or drop columns, indexes or constraints on an existing table, or backfill data.
+title: "Table change: <TableName> - <change>"
+labels: ["migration"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This needs a migration in `08_migrations/`. Once merged, the migration runs on **every** server at its next deployment.
+        Guide: `docs/how-to/03_changing-existing-objects-and-migrations.md`. When you open the pull request, use `?template=table_migration.md`.
+  - type: input
+    id: table
+    attributes:
+      label: Table
+      placeholder: CPU_Utilisation_History
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind of change
+      multiple: true
+      options:
+        - Add column
+        - Change column type / size / nullability
+        - Rename column
+        - Drop column
+        - Add / change / drop index or constraint
+        - Backfill or correct data
+        - Rename table (needs a manual run before deploying)
+        - Drop table
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: The change and why it's needed
+      placeholder: Add ServerName sysname NOT NULL, defaulting to the server name, so CPU history can be combined across instances.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Size and risk
+      description: Approximate table size on the largest server, whether the change can lose data, and any timing constraints (capture jobs, backup window).
+  - type: textarea
+    id: dependants
+    attributes:
+      label: Views / procedures / jobs affected
+  - type: input
+    id: ticket
+    attributes:
+      label: Change / ticket reference

@@ -1,0 +1,55 @@
+name: "New table, view or procedure"
+description: Add a new object to an existing package.
+title: "New object: <ObjectName>"
+labels: ["new-object"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this for a **new** object in a package that already exists. To change an existing object, use the *change* templates instead.
+        When you open the pull request, use `?template=new_object.md`.
+  - type: input
+    id: object
+    attributes:
+      label: Proposed object name
+      description: Follow the naming conventions, e.g. vw_CPU_Utilisation_Daily, usp_Monitor_CaptureTopQueries, Query_TopQueries_History.
+      placeholder: vw_<Domain>_<Description>
+    validations:
+      required: true
+  - type: dropdown
+    id: type
+    attributes:
+      label: Object type
+      options: [View, Procedure, Table]
+    validations:
+      required: true
+  - type: input
+    id: package
+    attributes:
+      label: Package
+      description: Exactly as in 10_metadata/packages.csv.
+      placeholder: SCC_Performance - CPU Monitoring
+    validations:
+      required: true
+  - type: input
+    id: domain
+    attributes:
+      label: Domain (folder)
+      description: Choose it from docs/DBA_DomainReferenceGuide.docx.
+      placeholder: cpu
+  - type: textarea
+    id: why
+    attributes:
+      label: What it should do and why
+      description: Who needs it, what question it answers, and which reports or jobs will use it.
+    validations:
+      required: true
+  - type: textarea
+    id: deps
+    attributes:
+      label: Objects it reads or calls
+      description: These become the object's DependsOn entries. Note any that belong to another domain or package.
+  - type: input
+    id: ticket
+    attributes:
+      label: Change / ticket reference

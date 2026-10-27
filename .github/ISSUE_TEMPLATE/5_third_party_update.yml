@@ -1,0 +1,37 @@
+name: "Update vendor code"
+description: Move to a new release of Ola Hallengren, the First Responder Kit, sp_WhoIsActive or Darling Data.
+title: "Vendor update: <tool> <version>"
+labels: ["third-party"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Vendor files in `02_third_party/` are replaced whole, never edited. When you open the pull request, use `?template=third_party_update.md`.
+  - type: dropdown
+    id: vendor
+    attributes:
+      label: Tool
+      options:
+        - Ola Hallengren Maintenance Solution
+        - Brent Ozar First Responder Kit
+        - sp_WhoIsActive (Adam Machanic)
+        - Darling Data (Erik Darling)
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Current version -> new version
+    validations:
+      required: true
+  - type: input
+    id: notes
+    attributes:
+      label: Release notes link
+  - type: textarea
+    id: why
+    attributes:
+      label: Why update
+      description: Bug fix, support for a new SQL Server version, a feature we need...
+    validations:
+      required: true

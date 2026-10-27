@@ -1,0 +1,43 @@
+name: "Something is broken"
+description: A deployed DBA database object, deployment script or job is failing or returning wrong results.
+title: "Problem: <short description>"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If it was fixed directly on a server in an emergency, say so below. The fix must be brought back into the repository, or the next deployment will overwrite it.
+  - type: input
+    id: where
+    attributes:
+      label: Server(s) / instance(s)
+    validations:
+      required: true
+  - type: input
+    id: object
+    attributes:
+      label: Object, script or job
+      placeholder: usp_Monitor_CaptureWaitStats / deploy_scc_cpu.sql / DBA_BlockingCapture
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Paste the error message, the expected result and the actual result, and say when it started.
+    validations:
+      required: true
+  - type: dropdown
+    id: hotfix
+    attributes:
+      label: Was anything changed directly on the server?
+      options:
+        - "No"
+        - "Yes - details below; it must be brought back into the repo"
+    validations:
+      required: true
+  - type: textarea
+    id: hotfix_detail
+    attributes:
+      label: Emergency change details
+      description: What was changed, on which servers, when, and by whom. Paste the SQL if you have it.

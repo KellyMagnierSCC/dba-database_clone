@@ -1,0 +1,2 @@
+# Personal SSMS deployment wrapper (see 09_deployment/local_deploy.example.sql)
+09_deployment/local_deploy.sql

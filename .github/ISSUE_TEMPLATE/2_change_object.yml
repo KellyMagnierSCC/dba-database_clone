@@ -1,0 +1,39 @@
+name: "Change a view or procedure"
+description: Change the logic of an existing view or procedure (no table changes).
+title: "Change: <ObjectName>"
+labels: ["change-object"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when only a view or procedure changes. If a table's columns, indexes or constraints change, use **Change a table (migration)**.
+        When you open the pull request, use `?template=change_object.md`.
+  - type: input
+    id: object
+    attributes:
+      label: Object(s)
+      placeholder: vw_CPU_Utilisation_Hourly
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Current behaviour
+      description: What it does now, or what is wrong with it.
+    validations:
+      required: true
+  - type: textarea
+    id: wanted
+    attributes:
+      label: Wanted behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: consumers
+    attributes:
+      label: Known consumers
+      description: Agent jobs, reports, dashboards or other objects that use it. Will the columns or results they get change?
+  - type: input
+    id: ticket
+    attributes:
+      label: Change / ticket reference

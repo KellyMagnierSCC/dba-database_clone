@@ -1,0 +1,49 @@
+﻿ObjectType,OldName,NewName,Rationale
+Table,SP_WHOISACTIVE_ActivityData,WhoIsActive_ActivityData,Remove SP_ prefix --- not a proc
+Table,SP_WHOISACTIVE_BlockingData,WhoIsActive_BlockingData,Consistent with above
+Table,SP_WHOISACTIVE_BlockingTree,WhoIsActive_BlockingTree,Consistent with above
+Table,FileStat_DB_History,FileStat_Database_History,Spell out DB
+Table,BlitzRun,Blitz_Run,Underscore separator
+Table,BlitzFinding,Blitz_Finding,Underscore separator
+Table,BlitzFinding_Stage,Blitz_Finding_Stage,Consistent with above
+Table,SccBaselineRule,Scc_BaselineRule,Underscore separator
+Table,SccAcceptedRisk,Scc_AcceptedRisk,Underscore separator
+View,vw_ActivityMonitor_BlockedSesionCount_last5Runs,vw_BlockingMonitor_BlockedSessionCount_Last5Runs,Fix typo; align prefix to blocking source it reads from
+View,vw_ActivityMonitor_Sessions_lastcollection,vw_ActivityMonitor_Sessions_LastCollection,PascalCase suffix
+View,vw_ActivityMonitor_SessionsGreater60Mins_lastcollection,vw_ActivityMonitor_SessionsOver60Min_LastCollection,Greater→Over; consistent suffix
+View,vw_BlockingMonitor_Blockingtree_lastcollection,vw_BlockingMonitor_BlockingTree_LastCollection,Keep BlockingMonitor prefix; matches source
+View,vw_BlockingMonitor_Blockingtree,vw_BlockingMonitor_BlockingTree,Keep BlockingMonitor prefix; matches source
+View,vw_FileStat_DB_Current,vw_FileStat_Database_Current,Spell out DB
+View,vw_FileStat_DB_Delta,vw_FileStat_Database_Delta,Spell out DB
+View,vw_FileStat_DB_PctChange,vw_FileStat_Database_PctChange,Spell out DB
+View,vw_FileStat_DB_RollingAvg,vw_FileStat_Database_RollingAvg,Spell out DB
+View,vw_FileStat_DB_Spikes,vw_FileStat_Database_Spikes,Spell out DB
+View,vw_IO_UsageByDB,vw_IO_UsageByDatabase,Spell out DB
+View,vw_CPU_UsageByDB,vw_CPU_UsageByDatabase,Spell out DB
+View,vw_CPU_UsageTopSessions,vw_CPU_TopSessions,Remove redundant Usage
+View,vw_CPU_UtilLast256Mins,vw_CPU_UtilLast256Min,Min not Mins
+View,vw_MEM_BufferPoolUsage,vw_Memory_BufferPoolUsage,MEM → Memory
+View,vw_MEM_ClerkUsage,vw_Memory_ClerkUsage,MEM → Memory
+View,vw_MEM_GrantsPending,vw_Memory_GrantsPending,MEM → Memory
+View,vw_MEM_SystemGeneral,vw_Memory_SystemGeneral,MEM → Memory
+View,vw_QUERY_MissingIndexes,vw_Query_MissingIndexes,Mixed case only
+View,vw_QUERY_TopAvgElapsedTime,vw_Query_TopAvgElapsedTime,Mixed case only
+View,vw_QUERY_TopTotalLogicalReads,vw_Query_TopTotalLogicalReads,Mixed case only
+View,vw_QUERY_TopTotalWorkerTime,vw_Query_TopTotalWorkerTime,Mixed case only
+View,vw_QUERY_TRANSACTIONS,vw_Query_Transactions,Mixed case only
+View,vw_QUERY_UDFStatsByDB,vw_Query_UDFStatsByDatabase,Spell out DB
+View,vw_QRY_ActiveTransactionsNotification,vw_Query_ActiveTransactionsAlert,QRY → Query; Notification → Alert
+View,vw_QRY_ActiveTransactionsNotification_SqlLongText,vw_Query_ActiveTransactionsAlert_LongText,Shortened; consistent
+View,vw_INSTANCE_ActiveTransactions,vw_Instance_ActiveTransactions,Mixed case INSTANCE → Instance
+View,vw_INSTANCE_LogFile_Usage,vw_Instance_LogFile_Usage,Mixed case
+View,vw_INSTANCE_CountSQLConnections,vw_Instance_ConnectionCount,Flip to noun-first; SQL implicit
+View,vw_INSTANCE_TopWaits,vw_Instance_TopWaits,Mixed case only
+View,vw_admin_BackupRestoreCompletionEstimate,vw_Admin_BackupRestoreEstimate,PascalCase prefix; shorten
+View,vw_admin_CommvaultLastBackups,vw_Admin_CommvaultLastBackups,PascalCase prefix only
+View,WaitStats_Top5WaitsPerBucket_5mins,vw_WaitStats_Top5WaitsPerBucket_5mins,Add missing vw_ prefix (suffix left as exported)
+Procedure,Capture_FileStats_History,usp_Monitor_CaptureFileStats,Naming reference v3
+Procedure,Capture_WaitStats_History,usp_Monitor_CaptureWaitStats,Naming reference v3
+Procedure,Capture_CPU_Utilisation_History,usp_Monitor_CaptureCpuUtilisation,"Adopt usp_ prefix; verb_noun pattern (name proposed, not in reference)"
+Procedure,Capture_RCSI_Snapshot,usp_Monitor_CaptureRCSISnapshot,"Adopt usp_ prefix; verb_noun pattern (name proposed, not in reference)"
+Procedure,usp_CheckHighCPUAlert,usp_Alert_HighCpu,New Alert prefix (notifies; writes nothing); Cpu as in usp_Monitor_CaptureCpuUtilisation
+Procedure,usp_CheckActiveTransactionAlert,usp_Alert_LongRunningTransactions,New Alert prefix; LongRunning describes the trigger

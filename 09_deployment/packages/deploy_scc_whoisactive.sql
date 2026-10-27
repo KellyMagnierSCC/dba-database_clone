@@ -1,0 +1,33 @@
+﻿-- ============================================================================
+-- deploy_scc_whoisactive.sql - SCC_WhoisActive - Activity and Blocking Monitoring
+-- ============================================================================
+-- Activity and blocking capture tables and views built around sp_WhoIsActive.
+--
+-- Own objects: 10   Vendor objects: 0   Pulled from other packages: 0
+--
+-- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
+-- sqlcmd:
+--   sqlcmd -S <instance> -E -b -v RepoRoot="D:\DevOps\dba-database" DatabaseName="DBA" -i <this file>
+-- SSMS (Query > SQLCMD Mode): run your own 09_deployment\local_deploy.sql
+--   (copy local_deploy.example.sql; it is not committed).
+-- RepoRoot must be a full path without spaces: the :r paths are unquoted because SSMS
+-- does not expand variables inside a quoted path.
+-- ============================================================================
+:r $(RepoRoot)\09_deployment\config.sql
+:on error exit
+GO
+USE [$(DatabaseName)]
+GO
+
+:r $(RepoRoot)\04_tables\activity\WhoIsActive_ActivityData.sql
+:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingData.sql
+:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingTree.sql
+:r $(RepoRoot)\04_tables\activity\WhoIsActive_ResultSet.sql
+:r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql
+:r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
+:r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockingTree_LastCollection.sql
+:r $(RepoRoot)\06_programmability\procedures\activity\usp_WhoIsActive_ActivityData.sql
+:r $(RepoRoot)\06_programmability\procedures\blocking\usp_WhoIsActive_BlockingData.sql
+
+:r $(RepoRoot)\10_metadata\apply_extended_properties.sql

@@ -1,0 +1,4 @@
+*.sql text eol=crlf
+*.csv text eol=lf
+*.py text eol=lf
+*.md text eol=lf

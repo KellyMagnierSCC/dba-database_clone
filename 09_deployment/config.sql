@@ -1,0 +1,21 @@
+-- ============================================================================
+-- config.sql - included first by every deploy script.
+--
+-- Deployment settings are supplied when you deploy, not stored in the repo:
+--   RepoRoot      full path of your clone of this repository, no spaces
+--   DatabaseName  database to deploy into
+--   DataPath      data file folder  } deploy_all.sql only: used when it has
+--   LogPath       log file folder   } to create the database
+--
+-- sqlcmd (a :setvar here would override -v, so there is none):
+--   sqlcmd -S <instance> -E -b -v RepoRoot="D:\DevOps\dba-database" DatabaseName="DBA" -i 09_deployment\packages\deploy_scc_cpu.sql
+--   deploy_all.sql: add  DataPath="E:\MOUNT\Databases\Data\Data01" LogPath="E:\MOUNT\Databases\Logs\Log01"
+--
+-- SSMS: copy 09_deployment\local_deploy.example.sql to local_deploy.sql (ignored by git),
+--   fill in your values and run it in SQLCMD mode.
+--
+-- The PRINT below uses DatabaseName and RepoRoot, so a deployment with either one missing stops
+-- here with "variable is not defined", before anything has been changed.
+-- ============================================================================
+PRINT CONCAT(N'Deploying to database [$(DatabaseName)] on ', @@SERVERNAME, N' from $(RepoRoot)');
+GO

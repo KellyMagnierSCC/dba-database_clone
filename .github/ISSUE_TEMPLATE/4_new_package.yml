@@ -1,0 +1,45 @@
+name: "New package"
+description: Propose a new deployment package (a set of objects that deploy together).
+title: "New package: SCC_<Area> - <Description>"
+labels: ["new-package"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Guide: `docs/how-to/01_adding-a-new-package.md`. When you open the pull request, use `?template=new_package.md`.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed PackageName
+      placeholder: SCC_Performance - Query Monitoring
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: What it monitors or does, and why
+    validations:
+      required: true
+  - type: textarea
+    id: objects
+    attributes:
+      label: Planned objects
+      description: One per line, as name, type and domain.
+      placeholder: |
+        Query_TopQueries_History - Table - query
+        usp_Monitor_CaptureTopQueries - Procedure - query
+        vw_Query_TopQueries_Latest - View - query
+  - type: input
+    id: vendor
+    attributes:
+      label: Vendor code it needs
+      placeholder: sp_WhoIsActive / Install-All-Scripts / none
+  - type: textarea
+    id: job
+    attributes:
+      label: Scheduling
+      description: Does it need an Agent job? How often should it run, and when?
+  - type: input
+    id: ticket
+    attributes:
+      label: Change / ticket reference
