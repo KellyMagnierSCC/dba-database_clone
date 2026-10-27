@@ -26,7 +26,7 @@ Ticket:
 
 ## Testing
 
-- [ ] Package script run twice on a non-production instance without errors
+- [ ] Package script run twice in your own test database on a non-production instance without errors
 - [ ] Results checked (paste a sample or describe them)
 
 ## Deployment record

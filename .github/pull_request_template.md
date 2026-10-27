@@ -19,7 +19,7 @@ Closes #<!-- issue number -->
 
 ## Testing
 
-<!-- What did you run, where (non-production), and what was the result? -->
+<!-- What did you run, in which test database on which non-production instance, and what was the result? -->
 
 ## Deployment record
 

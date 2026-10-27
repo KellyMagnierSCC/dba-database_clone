@@ -39,7 +39,7 @@ Closes #<!-- issue number: links this PR to the issue and closes the issue when 
 
 ## Testing
 
-On a non-production instance with the **old** table:
+In your own test database on a non-production instance, with the **old** table:
 
 - [ ] First package deploy: the migration printed `Added` / `Applied`
 - [ ] Second package deploy: the migration printed `Skipped`

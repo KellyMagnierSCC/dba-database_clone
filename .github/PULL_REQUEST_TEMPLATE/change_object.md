@@ -30,7 +30,7 @@ Ticket:
 
 ## Testing
 
-- [ ] Package script run on a non-production instance
+- [ ] Package script run in your own test database on a non-production instance
 - [ ] Output compared before and after (describe or paste a sample)
 
 ## Deployment record

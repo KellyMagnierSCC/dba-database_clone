@@ -105,10 +105,10 @@ Open `09_deployment/packages/deploy_scc_query.sql` and check:
 
 Run `git diff` as well. The only changes should be your new files, the two CSVs and the generated scripts. If other deploy scripts changed in ways you didn't expect, stop and find out why before going further.
 
-### Step 8: Test on a non-production instance
+### Step 8: Test in your own database on a non-production instance
 
 ```
-sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="<database>" -i 09_deployment\packages\deploy_scc_query.sql
+sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="DBA_<yourname>" -i 09_deployment\packages\deploy_scc_query.sql
 ```
 
 Run it **twice**. The second run must succeed with no errors, which proves the scripts can be re-run safely. Then confirm the metadata was stamped:
@@ -142,4 +142,4 @@ An object belongs to exactly one package. To move one, change the `PackageName` 
 - [ ] One manifest row per object, with `PackageName` matching exactly
 - [ ] `DependsOn` filled in, and `DeployOrder` above every dependency
 - [ ] `.\tools\generate_deploy.ps1` run, and the generated files committed
-- [ ] Package script run twice on a non-production instance without errors
+- [ ] Package script run twice in your own test database on a non-production instance without errors
