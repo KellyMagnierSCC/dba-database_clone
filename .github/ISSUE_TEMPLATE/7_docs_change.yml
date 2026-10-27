@@ -1,0 +1,31 @@
+name: "Documentation change"
+description: Fix or add to the documentation, templates or how-to guides. No SQL changes.
+title: "Docs: <short description>"
+labels: ["docs"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this when only documentation changes: `README.md`, `CONTRIBUTING.md`, `docs/`, or the issue and pull request templates. If an object, script or job changes too, use the template for that change instead.
+        Name the branch `docs/<issue-number>-<short-description>`. The pull request uses the default template, so add no `?template=`.
+  - type: input
+    id: documents
+    attributes:
+      label: Document(s)
+      placeholder: docs/how-to/00_github-workflow.md
+    validations:
+      required: true
+  - type: textarea
+    id: wrong
+    attributes:
+      label: What's wrong or missing
+      description: Quote the text that is wrong, unclear or contradicts another document, or describe what's missing. Say how you found it.
+    validations:
+      required: true
+  - type: textarea
+    id: wanted
+    attributes:
+      label: What it should say
+      description: The corrected wording, or the points the new text needs to cover.
+    validations:
+      required: true

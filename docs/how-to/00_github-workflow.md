@@ -39,6 +39,7 @@ Go to **Issues → New issue** and pick the template that matches the change:
 | New package | A new set of objects that deploy together | `new_package.md` |
 | Update vendor code | A new release of Ola, the First Responder Kit, sp_WhoIsActive or Darling Data | `third_party_update.md` |
 | Something is broken | Failing object, script or job, including emergency fixes made on a server | Whichever fits the fix |
+| Documentation change | Wording in `README.md`, `CONTRIBUTING.md`, `docs/` or the issue and PR templates, with no SQL changes | The default template (no `?template=`) |
 
 Fill in the *why* properly. A year from now, the issue is where someone will find out why a column exists.
 
@@ -95,6 +96,19 @@ git merge origin/main
 
 If the merge conflicts on **generated files** (`09_deployment/**`, `10_metadata/apply_extended_properties.sql`), don't fix them by hand. Resolve the conflicts in the CSV files, run `.\tools\generate_deploy.ps1`, and commit the regenerated output.
 
+**Test your branch in your own database.** Before you open the pull request, deploy your branch to a non-production instance, into a database that only you use. The deploy scripts take the database name as a variable, so each DBA can keep a copy on the shared dev server:
+
+```
+sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="DBA_<yourname>" DataPath="<data folder>" LogPath="<log folder>" -i 09_deployment\deploy_all.sql
+```
+
+After the first build, deploy just the package you changed. Run it twice: the second run proves the change can be re-deployed. Record what you ran and the result in the pull request's **Testing** section, not in the **Deployment record**.
+
+Don't deploy a branch into a database that other people use, including the team's `DBA` database on the dev server:
+
+- **Deployments overwrite each other.** Views and procedures deploy with `CREATE OR ALTER`, so whoever deploys last wins. If two people deploy different branches to the same database, one of them is testing code that is no longer there.
+- **Migrations can't be taken back.** Once a migration has run on a shared database it must never be edited. If review then changes it, that database is left in a state no file in the repo describes. Your own database you can simply drop and rebuild.
+
 ## 4. Open the pull request
 
 1. Push your branch. GitHub will show a **Compare & pull request** button.
@@ -134,7 +148,7 @@ When the PR is approved:
 
 ## 7. Deploy and record it
 
-Deploy from an up-to-date `main`, not from your branch:
+Your branch has already been tested in your own database (step 3). Shared databases, including the team's `DBA` database on the dev server, and every production server are deployed from an up-to-date `main`, so they only ever get reviewed code:
 
 ```
 git checkout main
@@ -164,7 +178,7 @@ Until step 3 is done, the server and the repo disagree. The next routine deploym
 - **Expect conflicts in generated files, and don't hand-edit them.** When two PRs both add objects, both change `09_deployment/**` and `10_metadata/apply_extended_properties.sql`. Whoever merges second should run `git merge origin/main`, keep the CSV changes from both sides, run `.\tools\generate_deploy.ps1`, and commit the result.
 - **`object_manifest.csv` conflicts are real conflicts.** Keep both rows. If two new objects ended up with the same `DeployOrder`, give one a different number.
 - **Two migrations on the same day** both start `YYYYMMDD_`. Use the next free `_NN` number. Migrations run in file-name order.
-- **Deploy from `main` only.** Never deploy from a branch, even your own. A server must only ever have code that has been reviewed.
+- **Branches go only into your own database; everything shared gets `main`.** Test your branch in a database only you use, such as `DBA_<yourname>`. Never deploy a branch into a shared database or to a production server. Those must only ever have code that has been reviewed.
 - **Ask in the issue or PR, not in chat.** Questions and answers there become part of the record.
 
 ## Repository setup (one-off, for an admin)
@@ -177,12 +191,13 @@ Done once when the repository is created. The workflow above relies on these set
 | Give the DevOps Team **Write** access | Settings → Collaborators and teams | Lets the team push branches and review. `CODEOWNERS` only works for teams with write access |
 | Allow only **squash merging** | Settings → General → Pull Requests | One commit per change |
 | Automatically delete head branches | Settings → General → Pull Requests | Keeps the branch list clean |
-| Create the labels `new-object`, `change-object`, `migration`, `new-package`, `third-party`, `bug` | Issues → Labels | The issue templates apply these labels. A label that doesn't exist in the repo isn't applied |
+| Create the labels `new-object`, `change-object`, `migration`, `new-package`, `third-party`, `bug`, `docs` | Issues → Labels | The issue templates apply these labels. A label that doesn't exist in the repo isn't applied |
 
 ## Quick reference
 
 ```
 Issue (template)  ->  "Create a branch" on the issue  ->  change + commit "(#n)"
+  ->  test the branch in your own database (record under Testing)
   ->  push  ->  PR with ?template=...  +  "Closes #n"  ->  review  ->  squash and merge
   ->  deploy from main  ->  fill in the Deployment record
 ```
