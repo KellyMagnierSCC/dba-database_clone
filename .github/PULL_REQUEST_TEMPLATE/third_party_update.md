@@ -36,7 +36,7 @@ Closes #<!-- issue number: links this PR to the issue and closes the issue when 
 
 ## Testing
 
-- [ ] `09_deployment\deploy_third_party.sql` run on a non-production instance
+- [ ] `09_deployment\deploy_third_party.sql` run in your own test database on a non-production instance
 - [ ] Dependent packages deployed, and their capture procedures and jobs run once successfully
 
 ## Deployment record

@@ -30,10 +30,10 @@ A useful analogy is a house. The object files are the architect's plan of the ho
 
 1. Edit the file in place. Keep `CREATE OR ALTER` and keep the file name.
 2. If the object now reads or calls something new, add that object to `DependsOn` in `10_metadata/object_manifest.csv` and run `.\tools\generate_deploy.ps1`.
-3. Deploy the package on a non-production instance, then raise a pull request.
+3. Deploy the package from your branch into your own test database on a non-production instance, then raise a pull request. See "Test your branch in your own database" in [00_github-workflow.md](00_github-workflow.md).
 
 ```
-sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="<database>" -i 09_deployment\packages\deploy_scc_cpu.sql
+sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="DBA_<yourname>" -i 09_deployment\packages\deploy_scc_cpu.sql
 ```
 
 ---
@@ -201,7 +201,7 @@ You can still run a migration on its own, for example to test it, with `sqlcmd -
 
 ### Step 6: Test, then raise a pull request
 
-On a non-production instance that has the **old** version of the table:
+In your own test database on a non-production instance, with the **old** version of the table (deploy `main` into it first, then switch to your branch):
 
 1. Run the package script. The migration should print `Added ...`, and the deployment should finish with no errors.
 2. Run the package script again. The migration should print `Skipped ...`, which proves it can be re-run.

@@ -116,7 +116,7 @@ Then check `git diff`. You should see these changes:
 ### Step 5: Test and commit
 
 ```
-sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="<database>" -i 09_deployment\packages\deploy_scc_cpu.sql
+sqlcmd -S <dev-instance> -E -b -v RepoRoot="<repo path>" DatabaseName="DBA_<yourname>" -i 09_deployment\packages\deploy_scc_cpu.sql
 ```
 
 Run it twice, then raise a pull request. The pull request should contain the new object file, the manifest change, and the regenerated scripts.
@@ -135,4 +135,4 @@ The procedure holds the logic. The job only does the scheduling, so its step sho
 - [ ] Manifest row added, with `PackageName` copied exactly, `DependsOn` filled in, and `DeployOrder` after its dependencies
 - [ ] Cross-domain comment added if needed
 - [ ] Generator run, and the diff shows only the expected changes
-- [ ] Package script run twice on a non-production instance
+- [ ] Package script run twice in your own test database on a non-production instance

@@ -5,7 +5,7 @@ This repository is the source of truth for the DBA utility database. The live da
 ## The rules that matter most
 
 1. **Every change goes through an issue and a reviewed pull request.** Nobody pushes to `main`, and nobody changes objects directly on a server. If an emergency forces a server change, bring it back into the repo the same day (see the workflow guide).
-2. **Test on a non-production instance first.** Deploy only from an up-to-date `main`, never from a branch.
+2. **Test your branch in your own database; release only from `main`.** While you work, deploy your branch into a database of your own (for example `DBA_<yourname>`) on a non-production instance. Shared databases, including the team's `DBA` database on the dev server, and every production server are deployed only from an up-to-date `main`.
 3. **Never hand-edit generated files**, meaning everything in `09_deployment/` except `config.sql` and `local_deploy.example.sql`, plus `10_metadata/apply_extended_properties.sql` and `tools/find_old_name_references.sql`. Change the CSVs in `10_metadata/` and run the generator.
 4. **Never edit vendor code** in `02_third_party/`. Only replace it with a new release.
 5. **An existing table only changes through a migration** in `08_migrations/`, together with the matching change to its file in `04_tables/`.
