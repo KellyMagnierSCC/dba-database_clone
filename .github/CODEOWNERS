@@ -1,3 +1,3 @@
 # Every change needs a review from the DevOps Team before it can be merged
 # (enforced when branch protection on main requires review from code owners).
-* @SurreyCountyCouncil/devops-team
+* @SurreyCountyCouncil/dba-reviewers
