@@ -6,7 +6,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Guide: `docs/how-to/01_adding-a-new-package.md`. When you open the pull request, use `?template=new_package.md`.
+        Guide: `docs/how-to/01_adding-a-new-package.md`. Read "When to create a new package" first: most new objects belong in an existing package.
+        When you open the pull request, use `?template=new_package.md`.
   - type: input
     id: name
     attributes:
@@ -18,6 +19,13 @@ body:
     id: why
     attributes:
       label: What it monitors or does, and why
+    validations:
+      required: true
+  - type: textarea
+    id: why_new
+    attributes:
+      label: Why a new package and not an existing one?
+      description: Name the closest existing package. Say why this would be installed without it, or it without this, for example because of different vendor code, or because this captures history where that package only reads live DMVs.
     validations:
       required: true
   - type: textarea

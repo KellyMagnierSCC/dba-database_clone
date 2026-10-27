@@ -2,6 +2,8 @@
 
 Use this guide when you add a **new** table, view or procedure to a package that already exists. To change an object that already exists, see [03_changing-existing-objects-and-migrations.md](03_changing-existing-objects-and-migrations.md).
 
+Not sure whether your object needs a new package? See [When to create a new package](01_adding-a-new-package.md#when-to-create-a-new-package). The answer is usually no.
+
 There are three steps: **write the file, register it in the manifest, and regenerate.** A file that isn't in `object_manifest.csv` is never deployed, because the deploy scripts only include what the manifest lists.
 
 ---

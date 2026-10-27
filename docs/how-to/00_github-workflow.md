@@ -36,7 +36,7 @@ Go to **Issues → New issue** and pick the template that matches the change:
 | New table, view or procedure | New object in an existing package | `new_object.md` |
 | Change a view or procedure | Logic change, no table changes | `change_object.md` |
 | Change a table (migration) | Columns, indexes, constraints or data in an existing table | `table_migration.md` |
-| New package | A new set of objects that deploy together | `new_package.md` |
+| New package | A new capability that is deployed on its own (see [when to create a new package](01_adding-a-new-package.md#when-to-create-a-new-package)) | `new_package.md` |
 | Update vendor code | A new release of Ola, the First Responder Kit, sp_WhoIsActive or Darling Data | `third_party_update.md` |
 | Something is broken | Failing object, script or job, including emergency fixes made on a server | Whichever fits the fix |
 | Documentation change | Wording in `README.md`, `CONTRIBUTING.md`, `docs/` or the issue and PR templates, with no SQL changes | The default template (no `?template=`) |

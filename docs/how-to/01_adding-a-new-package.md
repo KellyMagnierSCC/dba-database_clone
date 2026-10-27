@@ -1,8 +1,55 @@
 # How to add a new deployment package
 
-A **package** is a named group of objects that can be deployed on its own with one script, for example `09_deployment/packages/deploy_scc_cpu.sql`. Packages sit on top of the domain folders. A package can use objects from several domains, and the folder an object lives in does not change because of the package it belongs to.
+A **deployment package** is a named set of objects that together provide one monitoring or administration capability, and that can be deployed on its own with one generated script, for example `09_deployment/packages/deploy_scc_cpu.sql`. Packages sit on top of the domain folders. A package can use objects from several domains, and the folder an object lives in does not change because of the package it belongs to.
+
+In this repository, "package" always means a deployment package. It has nothing to do with SSIS packages (`.dtsx`) or Oracle PL/SQL packages.
 
 Think of the domain folders as the aisles in a warehouse and a package as an order list. The list says which items to pick, but the items stay on their shelves.
+
+## What a package is
+
+Every package:
+
+- provides **one capability** that a DBA decides whether to install on a server, such as CPU monitoring, RCSI monitoring or the Blitz health checks;
+- has **one row** in `10_metadata/packages.csv` and **one generated script**, `09_deployment/packages/deploy_scc_<name>.sql`;
+- **owns its objects**. Each object belongs to at most one package. Objects with no package, such as the database, security and infrastructure objects, are deployed only by `deploy_all.sql`;
+- lists the **vendor code** it needs in `ThirdPartyRequires`.
+
+The current packages come in three shapes:
+
+| Shape | What it contains | Examples |
+|---|---|---|
+| **Capture** | A history table, a `usp_Monitor_Capture...` procedure that an Agent job runs, and views that read the history | `SCC_Performance - CPU Monitoring`, `SCC_Performance - Wait Statistics Monitoring` |
+| **Diagnostics** | Views over live DMVs, sometimes with a `usp_Alert_...` procedure. No history table and no capture job | `SCC_Performance - Memory Monitoring`, `SCC_Performance - Instance Diagnostics` |
+| **Framework** | Tables, procedures and views built around one vendor tool | `SCC_Blitz - Health Check Framework`, `SCC_WhoisActive - Activity and Blocking Monitoring` |
+
+## When to create a new package
+
+**By default, add to an existing package.** Every new package means another script to deploy on every server and another row in every deployment record, so a new package has to earn its place.
+
+Work through these questions in order:
+
+1. **Does it read or extend data that an existing package already owns?** If so, it belongs to that package. Stop here. For example:
+    - a new view over `CPU_Utilisation_History`;
+    - a report over the Blitz findings;
+    - a `usp_Alert_...` procedure that reads a `Monitor` table. `usp_Alert_HighCpu` is in the CPU package for this reason;
+    - a new column on an existing table.
+2. **Would a DBA ever install it without the closest existing package, or that package without it?** If the two would always be deployed together, they are one capability. Add it to the existing package and stop here.
+3. **If they would be installed separately, create a new package.** The usual reasons are:
+    - **It needs vendor code that the existing package doesn't.** A separate package means the existing one can still be installed on servers that don't have that vendor code. `SCC_WhoisActive` is separate for this reason: it needs `sp_WhoIsActive`.
+    - **It captures and stores data on a schedule, but the closest package only reads live DMVs.** Capture adds an Agent job and a table that grows, which not every server should have. That is why the worked example below is a new package and not part of `SCC_Performance - Instance Diagnostics`.
+    - **It serves a different purpose**, for example backup administration rather than performance monitoring.
+
+These are **not** reasons for a new package:
+
+- **A new domain folder.** Domains organise files, and packages organise deployment. `SCC_WhoisActive` spans the `activity` and `blocking` domains, and `SCC_Performance - Instance Diagnostics` spans `instance` and `query`.
+- **A package getting large.** Size doesn't define a capability. Split a package only if its parts would be deployed separately (question 2).
+- **A shared helper object.** Put a function or table that several packages use into the package that needed it first. The generator adds it to the other packages' scripts automatically, and their script headers list it under `Pulled from other packages`.
+- **One request or one person.** A package is named after what it does, not after the ticket or the person who asked for it.
+
+If you're not sure, raise a **New package** issue and say which existing package you considered and why it doesn't fit. The reviewer decides before any code is written.
+
+## How a package is defined
 
 You never write a package script by hand. You describe the package in two CSV files, and the generator writes the script.
 
@@ -16,7 +63,11 @@ You never write a package script by hand. You describe the package in two CSV fi
 
 ## Worked example
 
-This example adds a package called **`SCC_Performance - Query Monitoring`**. It captures the top queries from the plan cache into a history table. It has three objects:
+This example adds a package called **`SCC_Performance - Query Monitoring`**. It captures the top queries from the plan cache into a history table.
+
+**Why it is a new package:** `SCC_Performance - Instance Diagnostics` already has top-query views, but they read the live plan cache. This package adds a history table and a capture job, and a DBA may want the live views on a server without having that history collected (question 3 above).
+
+It has three objects:
 
 | Object | Type | File |
 |---|---|---|
@@ -38,6 +89,8 @@ git checkout -b feature/package-query-monitoring
 |---|---|---|
 | `PackageName` | `SCC_<Area> - <Plain description>` | `SCC_Performance - Query Monitoring` |
 | `ScriptName` | `deploy_scc_<short_name>`, lower case, no `.sql` | `deploy_scc_query` |
+
+`<Area>` is either the broad area the package belongs to, such as `Performance` or `Admin`, or, for a package built around one tool or SQL Server feature, the name of that tool or feature, such as `Blitz`, `WhoisActive` or `RCSI`. The description says what the package does, in plain words.
 
 `PackageName` has to match **exactly**, letter for letter and including spaces, everywhere it appears. That means `packages.csv`, every row in `object_manifest.csv`, and the `PackageName` extended property that gets stamped on each object. A single typo leaves you with an object that belongs to no package, or a package that has no objects, and the generator stops with the error `Package has no objects`.
 
