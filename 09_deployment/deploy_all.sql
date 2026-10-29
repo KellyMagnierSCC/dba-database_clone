@@ -29,9 +29,11 @@ GO
 :r $(RepoRoot)\02_third_party\adam_machanic\sp_WhoIsActive.sql
 :r $(RepoRoot)\02_third_party\erik_darling\DarlingData.sql
 
+-- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
+
 -- 03_types (none yet) (0 objects)
 
--- 04_tables (23 objects)
+-- 04_tables (25 objects)
 :r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
@@ -55,10 +57,10 @@ GO
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestDurations.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestIOStats.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestWaitStats.sql
+:r $(RepoRoot)\04_tables\instance\LogUsage_History.sql
+:r $(RepoRoot)\04_tables\instance\LogGrowth_History.sql
 
--- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
-
--- 05_views (54 objects)
+-- 05_views (56 objects)
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerBucket_5mins.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
@@ -113,8 +115,10 @@ GO
 :r $(RepoRoot)\05_views\workload_metrics\vw_WorkloadMetricsComparison.sql
 :r $(RepoRoot)\05_views\admin\vw_Admin_BackupRestoreEstimate.sql
 :r $(RepoRoot)\05_views\admin\vw_Admin_CommvaultLastBackups.sql
+:r $(RepoRoot)\05_views\instance\vw_Instance_LogUsage_Latest.sql
+:r $(RepoRoot)\05_views\instance\vw_Instance_LogGrowth_Last7Days.sql
 
--- 06_programmability (9 objects)
+-- 06_programmability (11 objects)
 :r $(RepoRoot)\06_programmability\procedures\cpu\usp_Monitor_CaptureCpuUtilisation.sql
 :r $(RepoRoot)\06_programmability\procedures\filestat\usp_Monitor_CaptureFileStats.sql
 :r $(RepoRoot)\06_programmability\procedures\rcsi\usp_Monitor_CaptureRCSISnapshot.sql
@@ -124,6 +128,8 @@ GO
 :r $(RepoRoot)\06_programmability\procedures\blocking\usp_WhoIsActive_BlockingData.sql
 :r $(RepoRoot)\06_programmability\procedures\cpu\usp_Alert_HighCpu.sql
 :r $(RepoRoot)\06_programmability\procedures\query\usp_Alert_LongRunningTransactions.sql
+:r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogUsage.sql
+:r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogGrowth.sql
 
 -- 10_metadata
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql

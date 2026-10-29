@@ -9,3 +9,4 @@ SCC_Performance - Wait Statistics Monitoring,deploy_scc_waitstats,,Wait statisti
 SCC_Performance - Workload Metrics,deploy_scc_workloadmetrics,,Workload test run/result tables and comparison view.
 SCC_RCSI - Snapshot Isolation Monitoring,deploy_scc_rcsi,,RCSI / version store / tempdb snapshot capture and views.
 SCC_WhoisActive - Activity and Blocking Monitoring,deploy_scc_whoisactive,sp_WhoIsActive,Activity and blocking capture tables and views built around sp_WhoIsActive.
+SCC_Performance - Transaction Log Monitoring,deploy_scc_translog,,"Transaction log usage and log autogrowth capture, with views over the history."

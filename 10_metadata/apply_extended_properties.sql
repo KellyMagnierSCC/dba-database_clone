@@ -45,6 +45,8 @@ VALUES
     (N'dbo', N'WorkloadMetricsTestDurations', N'TABLE', N'workload_metrics', N'SCC_Performance - Workload Metrics', N'False'),
     (N'dbo', N'WorkloadMetricsTestIOStats', N'TABLE', N'workload_metrics', N'SCC_Performance - Workload Metrics', N'False'),
     (N'dbo', N'WorkloadMetricsTestWaitStats', N'TABLE', N'workload_metrics', N'SCC_Performance - Workload Metrics', N'False'),
+    (N'dbo', N'LogUsage_History', N'TABLE', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False'),
+    (N'dbo', N'LogGrowth_History', N'TABLE', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False'),
     (N'dbo', N'vw_WaitStats_Top5WaitsPerBucket_5mins', N'VIEW', N'waitstats', N'SCC_Performance - Wait Statistics Monitoring', N'False'),
     (N'dbo', N'vw_ActivityMonitor_BlockedSessionCount_Last5Runs', N'VIEW', N'activity', N'SCC_WhoisActive - Activity and Blocking Monitoring', N'False'),
     (N'dbo', N'vw_ActivityMonitor_SessionsOver60Min_LastCollection', N'VIEW', N'activity', N'SCC_WhoisActive - Activity and Blocking Monitoring', N'False'),
@@ -99,6 +101,8 @@ VALUES
     (N'dbo', N'vw_WorkloadMetricsComparison', N'VIEW', N'workload_metrics', N'SCC_Performance - Workload Metrics', N'False'),
     (N'dbo', N'vw_Admin_BackupRestoreEstimate', N'VIEW', N'admin', N'SCC_Admin - Backup and Administration', N'False'),
     (N'dbo', N'vw_Admin_CommvaultLastBackups', N'VIEW', N'admin', N'SCC_Admin - Backup and Administration', N'False'),
+    (N'dbo', N'vw_Instance_LogUsage_Latest', N'VIEW', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False'),
+    (N'dbo', N'vw_Instance_LogGrowth_Last7Days', N'VIEW', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False'),
     (N'dbo', N'usp_Monitor_CaptureCpuUtilisation', N'PROCEDURE', N'cpu', N'SCC_Performance - CPU Monitoring', N'False'),
     (N'dbo', N'usp_Monitor_CaptureFileStats', N'PROCEDURE', N'filestat', N'SCC_Performance - File and IO Statistics', N'False'),
     (N'dbo', N'usp_Monitor_CaptureRCSISnapshot', N'PROCEDURE', N'rcsi', N'SCC_RCSI - Snapshot Isolation Monitoring', N'False'),
@@ -107,7 +111,9 @@ VALUES
     (N'dbo', N'usp_WhoIsActive_ActivityData', N'PROCEDURE', N'activity', N'SCC_WhoisActive - Activity and Blocking Monitoring', N'False'),
     (N'dbo', N'usp_WhoIsActive_BlockingData', N'PROCEDURE', N'blocking', N'SCC_WhoisActive - Activity and Blocking Monitoring', N'False'),
     (N'dbo', N'usp_Alert_HighCpu', N'PROCEDURE', N'cpu', N'SCC_Performance - CPU Monitoring', N'False'),
-    (N'dbo', N'usp_Alert_LongRunningTransactions', N'PROCEDURE', N'query', N'SCC_Performance - Instance Diagnostics', N'False');
+    (N'dbo', N'usp_Alert_LongRunningTransactions', N'PROCEDURE', N'query', N'SCC_Performance - Instance Diagnostics', N'False'),
+    (N'dbo', N'usp_Monitor_CaptureLogUsage', N'PROCEDURE', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False'),
+    (N'dbo', N'usp_Monitor_CaptureLogGrowth', N'PROCEDURE', N'instance', N'SCC_Performance - Transaction Log Monitoring', N'False');
 
 DECLARE @Schema sysname, @Object sysname, @Type nvarchar(60),
         @PropName sysname, @PropValue nvarchar(4000), @Current nvarchar(4000),

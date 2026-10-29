@@ -47,3 +47,6 @@ Procedure,Capture_CPU_Utilisation_History,usp_Monitor_CaptureCpuUtilisation,"Ado
 Procedure,Capture_RCSI_Snapshot,usp_Monitor_CaptureRCSISnapshot,"Adopt usp_ prefix; verb_noun pattern (name proposed, not in reference)"
 Procedure,usp_CheckHighCPUAlert,usp_Alert_HighCpu,New Alert prefix (notifies; writes nothing); Cpu as in usp_Monitor_CaptureCpuUtilisation
 Procedure,usp_CheckActiveTransactionAlert,usp_Alert_LongRunningTransactions,New Alert prefix; LongRunning describes the trigger
+Table,LogSize_Snapshot_History,LogUsage_History,Planned name from the naming reference; replaced not renamed (data ages out)
+Table,LogGrowth_Event_History,LogGrowth_History,Log file growth only; replaced not renamed (data ages out)
+Procedure,usp_Capture_LogSnapshot_History,usp_Monitor_CaptureLogUsage,usp_Monitor_Capture pattern; growth capture split into usp_Monitor_CaptureLogGrowth

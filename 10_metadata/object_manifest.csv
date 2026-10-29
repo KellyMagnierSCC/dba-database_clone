@@ -91,3 +91,9 @@ Procedure,dbo,usp_WhoIsActive_ActivityData,06_programmability/procedures/activit
 Procedure,dbo,usp_WhoIsActive_BlockingData,06_programmability/procedures/blocking/usp_WhoIsActive_BlockingData.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_BlockingData,1140
 Procedure,dbo,usp_Alert_HighCpu,06_programmability/procedures/cpu/usp_Alert_HighCpu.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,vw_CPU_UtilLast256Min,1150
 Procedure,dbo,usp_Alert_LongRunningTransactions,06_programmability/procedures/query/usp_Alert_LongRunningTransactions.sql,query,SCC_Performance - Instance Diagnostics,FALSE,,vw_Query_ActiveTransactionsAlert,1160
+Table,dbo,LogUsage_History,04_tables/instance/LogUsage_History.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,,525
+Table,dbo,LogGrowth_History,04_tables/instance/LogGrowth_History.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,,527
+View,dbo,vw_Instance_LogUsage_Latest,05_views/instance/vw_Instance_LogUsage_Latest.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,LogUsage_History,1075
+View,dbo,vw_Instance_LogGrowth_Last7Days,05_views/instance/vw_Instance_LogGrowth_Last7Days.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,LogGrowth_History,1076
+Procedure,dbo,usp_Monitor_CaptureLogUsage,06_programmability/procedures/instance/usp_Monitor_CaptureLogUsage.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,LogUsage_History,1170
+Procedure,dbo,usp_Monitor_CaptureLogGrowth,06_programmability/procedures/instance/usp_Monitor_CaptureLogGrowth.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,LogGrowth_History,1180
