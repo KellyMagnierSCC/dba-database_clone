@@ -22,9 +22,9 @@ Top-level folders are numbered in deployment order; the domain subfolders are fo
 08_migrations/                                   forward-only, dated structural change scripts
 09_deployment/      config.sql  local_deploy.example.sql  deploy_all.sql  deploy_third_party.sql  packages/
 10_metadata/        object_manifest.csv  packages.csv  migration_manifest.csv  rename_map.csv  apply_extended_properties.sql
-tools/              generate_deploy.ps1  find_old_name_references.sql  workload_metrics/  templates/
+tools/              generate_deploy.ps1  check_standards.ps1  standards_exceptions.csv  find_old_name_references.sql  workload_metrics/  templates/
 docs/               design principles, naming conventions, domain guide, object naming reference, source control design
-.github/            issue and pull request templates, CODEOWNERS (DevOps Team reviews every change)
+.github/            issue and pull request templates, CODEOWNERS (DevOps Team reviews every change), workflows/standards.yml (checks every PR)
 CONTRIBUTING.md                                  first-time setup and the rules that matter most
 ```
 

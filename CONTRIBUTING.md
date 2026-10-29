@@ -50,9 +50,10 @@ From the repository root, in PowerShell:
 ```powershell
 .\tools\generate_deploy.ps1
 git status
+.\tools\check_standards.ps1
 ```
 
-It should finish with a "Generated ..." line, and `git status` should show no changes.
+The generator should finish with a "Generated ..." line, `git status` should show no changes, and the standards check should report `0 violation(s)`.
 
 If PowerShell refuses to run the script because "running scripts is disabled on this system", allow scripts for your own account:
 

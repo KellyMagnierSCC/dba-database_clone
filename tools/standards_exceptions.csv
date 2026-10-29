@@ -1,0 +1,16 @@
+Rule,Path,Reason
+SC006,04_tables/blitz_scc/Scc_BaselineRule.sql,Unnamed PRIMARY KEY. Naming it on existing servers needs a migration (sp_rename of the generated name)
+SC006,04_tables/filestat/FileStat_Database_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/filestat/FileStat_Drive_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/rcsi/RCSI_ActiveTransactions_Extended_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/rcsi/RCSI_ActiveTransactions_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/rcsi/RCSI_TempdbUsage_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/rcsi/RCSI_VersionStoreUsage_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/waitstats/WaitStats_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/workload_metrics/WorkloadMetricsTestIOStats.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/workload_metrics/WorkloadMetricsTestQueries.sql,Two unnamed DEFAULTs. Naming them on existing servers needs a migration
+SC006,04_tables/workload_metrics/WorkloadMetricsTestRuns.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC006,04_tables/workload_metrics/WorkloadMetricsTestWaitStats.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
+SC007,05_views/activity/vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql,Extended-property calls left from the original export. Remove them in a change_object PR
+SC008,05_views/blocking/vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql,Duplicate of the activity view under the naming reference's name. Decide which name is correct and remove the other file
+SC008,05_views/blocking/vw_BlockingMonitor_BlockingTree.sql,In the naming reference but has no manifest row. Add the row or remove the file

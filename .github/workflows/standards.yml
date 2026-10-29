@@ -1,0 +1,36 @@
+# Runs on every pull request and every push to main.
+# 1. tools\check_standards.ps1 - the coding standards (see the rule list at the top of the script)
+# 2. tools\generate_deploy.ps1 - the generated files in the commit match the CSVs
+# Both run in Windows PowerShell 5.1, as on the DBAs' own machines.
+name: Standards check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Coding standards
+        shell: cmd
+        run: powershell -NoProfile -ExecutionPolicy Bypass -File tools\check_standards.ps1
+
+      - name: Generated files are up to date
+        shell: powershell
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -File tools\generate_deploy.ps1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          # Staging normalises line endings, so only real content differences are reported
+          git add -A
+          git diff --cached --stat --exit-code
+          if ($LASTEXITCODE -ne 0) {
+              Write-Host '::error::Generated files are out of date. Run .\tools\generate_deploy.ps1 and commit the result.'
+              exit 1
+          }
