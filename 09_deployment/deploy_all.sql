@@ -29,8 +29,6 @@ GO
 :r $(RepoRoot)\02_third_party\adam_machanic\sp_WhoIsActive.sql
 :r $(RepoRoot)\02_third_party\erik_darling\DarlingData.sql
 
--- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
-
 -- 03_types (none yet) (0 objects)
 
 -- 04_tables (25 objects)
@@ -59,6 +57,8 @@ GO
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestWaitStats.sql
 :r $(RepoRoot)\04_tables\instance\LogUsage_History.sql
 :r $(RepoRoot)\04_tables\instance\LogGrowth_History.sql
+
+-- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
 
 -- 05_views (56 objects)
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerBucket_5mins.sql
