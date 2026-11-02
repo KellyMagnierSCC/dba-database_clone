@@ -3,7 +3,8 @@
 -- ============================================================================
 -- Activity and blocking capture tables and views built around sp_WhoIsActive.
 --
--- Own objects: 10   Vendor objects: 0   Pulled from other packages: 0
+-- Own objects: 10   Vendor objects: 1   Pulled from other packages: 0
+-- Vendor objects: sp_WhoIsActive
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
 -- sqlcmd:
@@ -18,6 +19,9 @@
 GO
 USE [$(DatabaseName)]
 GO
+
+-- 02_third_party (1, from ThirdPartyRequires in packages.csv)
+:r $(RepoRoot)\02_third_party\adam_machanic\sp_WhoIsActive.sql
 
 :r $(RepoRoot)\04_tables\activity\WhoIsActive_ActivityData.sql
 :r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingData.sql

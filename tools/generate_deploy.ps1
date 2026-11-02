@@ -303,11 +303,14 @@ function New-Package($Pkg, $Objs, $Migs) {
     if ($pkgMigs.Count -gt 0) {
         $want = Get-Closure $Objs ([string[]](@($seeds) + $MigrationLog))
     }
-    $sel = @($Objs | Where-Object { $want.Contains($_.ObjectName) -and $Level1Type.ContainsKey($_.ObjectType) })
+    # Vendor rows have ObjectType 'ThirdParty', which is not in $Level1Type, so keep them explicitly
+    $sel = @($Objs | Where-Object { $want.Contains($_.ObjectName) -and ($_.IsThirdParty -or $Level1Type.ContainsKey($_.ObjectType)) })
+    $vendorSel = @($sel | Where-Object { $_.IsThirdParty })
+    $sel = @($sel | Where-Object { -not $_.IsThirdParty })
 
-    $pulled = Get-OrdinalSorted (@($sel | Where-Object { -not $_.IsThirdParty -and $_.PackageName -ne $name } |
+    $pulled = Get-OrdinalSorted (@($sel | Where-Object { $_.PackageName -ne $name } |
                                    ForEach-Object { $_.ObjectName }))
-    $vendor = @($sel | Where-Object { $_.IsThirdParty } | ForEach-Object { $_.ObjectName })
+    $vendor = @($vendorSel | ForEach-Object { $_.ObjectName })
 
     $notes = New-Object System.Collections.Generic.List[string]
     $notes.Add($Pkg.Description)
@@ -320,6 +323,12 @@ function New-Package($Pkg, $Objs, $Migs) {
     $notes.AddRange([string[]]$RunNote)
 
     $out = New-Preamble "$($Pkg.ScriptName).sql - $name" ([string[]]$notes)
+    # Vendor code first, as in deploy_all.sql (02_third_party before 04_tables)
+    if ($vendorSel.Count -gt 0) {
+        $out.Add("-- 02_third_party ($($vendorSel.Count), from ThirdPartyRequires in packages.csv)")
+        $out.AddRange((Get-RLines $vendorSel))
+        $out.Add('')
+    }
     if ($pkgMigs.Count -gt 0) {
         $out.AddRange((Get-RLines @($sel | Where-Object { $_.ObjectType -eq 'Table' })))
         $out.Add('')

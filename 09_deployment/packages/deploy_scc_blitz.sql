@@ -3,7 +3,8 @@
 -- ============================================================================
 -- Blitz run/finding tables, usp_Run_Blitz and the compliance views.
 --
--- Own objects: 10   Vendor objects: 0   Pulled from other packages: 0
+-- Own objects: 10   Vendor objects: 1   Pulled from other packages: 0
+-- Vendor objects: Install-All-Scripts
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
 -- sqlcmd:
@@ -18,6 +19,9 @@
 GO
 USE [$(DatabaseName)]
 GO
+
+-- 02_third_party (1, from ThirdPartyRequires in packages.csv)
+:r $(RepoRoot)\02_third_party\brent_ozar\Install-All-Scripts.sql
 
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql

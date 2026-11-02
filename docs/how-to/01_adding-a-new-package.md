@@ -106,7 +106,7 @@ SCC_Performance - Query Monitoring,deploy_scc_query,,Top query capture from the 
 
 The columns are `PackageName,ScriptName,ThirdPartyRequires,Description`.
 
-- **ThirdPartyRequires** lists vendor objects the package needs. Use the `ObjectName` values from the manifest's third-party rows, separated by semicolons with no spaces, for example `sp_WhoIsActive` or `Install-All-Scripts`. Leave it empty if the package doesn't call vendor code.
+- **ThirdPartyRequires** lists vendor objects the package needs. Use the `ObjectName` values from the manifest's third-party rows, separated by semicolons with no spaces, for example `sp_WhoIsActive` or `Install-All-Scripts`. The generated package script installs these first, before the package's own tables, and lists them under `Vendor objects` in its header. Only list what the package actually calls: a vendor script can do more than install procedures. For example, Ola Hallengren's `MaintenanceSolution` creates SQL Agent jobs by default. Leave it empty if the package doesn't call vendor code.
 - If **Description** contains a comma, put it in double quotes.
 
 ### Step 5: Add one manifest row per object to `object_manifest.csv`
