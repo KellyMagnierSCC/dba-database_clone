@@ -1,4 +1,1 @@
 ﻿MigrationFile,ObjectName
-20261028_01_LogUsage_History_DropLegacyCaptureProc.sql,LogUsage_History
-20261028_02_LogUsage_History_DropLegacyLogSizeTable.sql,LogUsage_History
-20261028_03_LogGrowth_History_DropLegacyLogGrowthTable.sql,LogGrowth_History
