@@ -123,13 +123,16 @@ Don't deploy a branch into a database that other people use, including the team'
 ## 4. Open the pull request
 
 1. Push your branch. GitHub will show a **Compare & pull request** button.
-2. Before filling anything in, add the template for your change type to the end of the URL and reload the page:
+2. Before filling anything in, add the template for your change type to the end of the address and reload the page. A web address can only have one `?`, so what you add depends on the address you have:
 
-   ```
-   ?template=table_migration.md
-   ```
+   | The address | Add | Result |
+   |---|---|---|
+   | Already contains `?expand=1`, as it does when you start from GitHub Desktop | `&template=table_migration.md` | The form opens straight away, with the template filled in |
+   | Has no `?` in it | `?template=table_migration.md` | The compare page opens first. Click **Create pull request** and the form opens with the template. To skip that click, add `?expand=1&template=table_migration.md` instead |
 
-   For example: `https://github.com/SurreyCountyCouncil/dba-database/compare/main...migration/42-cpu-history-add-servername?template=table_migration.md`
+   For example, from GitHub Desktop: `https://github.com/SurreyCountyCouncil/dba-database/compare/main...migration/42-cpu-history-add-servername?expand=1&template=table_migration.md`
+
+   If you add `?template=…` to an address that already contains `?expand=1`, the template is ignored.
 3. Title it the same way as the commit: `CPU_Utilisation_History: add ServerName column`.
 4. In the description, write **`Closes #42`**. This links the PR to the issue and closes the issue automatically when the PR is merged.
 5. Work through the template's checklist. Tick only what you've actually done. If an item doesn't apply, leave it unticked and write why on the same line, for example `**N/A:** no new dependencies`. A tick means "done", so an unticked item with a reason tells the reviewer more than a tick would. The coding standards and generated-file checks aren't in the checklists: they run once the PR is open, and their result appears in the PR's checks section.

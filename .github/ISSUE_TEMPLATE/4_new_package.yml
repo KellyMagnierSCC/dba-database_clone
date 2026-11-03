@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Guide: `docs/how-to/01_adding-a-new-package.md`. Read "When to create a new package" first: most new objects belong in an existing package.
-        When you open the pull request, use `?template=new_package.md`.
+        When you open the pull request, add the template to the address: `&template=new_package.md` if the address already contains `?expand=1` (it does when you start from GitHub Desktop), otherwise `?template=new_package.md`.
   - type: input
     id: name
     attributes:

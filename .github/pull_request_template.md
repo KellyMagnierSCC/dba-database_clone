@@ -1,13 +1,16 @@
 <!--
-Pick the template for your change type: add ?template=<file> to the URL of the pull request page.
+Pick the template for your change type by adding it to the address of the pull request page:
+  - if the address already contains ?expand=1 (it does when you start from GitHub Desktop), add &template=<file>
+  - if the address has no ? in it, add ?template=<file>  (use ?expand=1&template=<file> to skip the extra click)
 
-  ?template=new_object.md          new table, view or procedure in an existing package
-  ?template=change_object.md       change to an existing view or procedure
-  ?template=table_migration.md     change to an existing table (08_migrations)
-  ?template=new_package.md         new deployment package
-  ?template=third_party_update.md  new release of vendor code (02_third_party)
+  template=new_object.md           new table, view or procedure in an existing package
+  template=change_object.md        change to an existing view or procedure
+  template=table_migration.md      change to an existing table (08_migrations)
+  template=new_package.md          new deployment package
+  template=third_party_update.md   new release of vendor code (02_third_party)
 
-Example: https://github.com/SurreyCountyCouncil/dba-database/compare/main...my-branch?template=table_migration.md
+Examples: https://github.com/SurreyCountyCouncil/dba-database/compare/main...my-branch?expand=1&template=table_migration.md
+          (from GitHub Desktop, the address already ends ?expand=1, so just add &template=table_migration.md)
 Use this default only for changes that fit none of them (documentation, tooling).
 -->
 

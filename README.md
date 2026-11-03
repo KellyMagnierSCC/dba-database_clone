@@ -83,7 +83,7 @@ New to this repository? Start with [CONTRIBUTING.md](CONTRIBUTING.md), which cov
 - [Adding a new object to an existing package](docs/how-to/02_adding-objects-to-a-package.md)
 - [Starter templates for tables, views, procedures and migrations](tools/templates/README.md)
 - [Changing existing objects and using `08_migrations`](docs/how-to/03_changing-existing-objects-and-migrations.md), with a worked example of adding a column
-- Pull request templates for each change type are in [`.github/PULL_REQUEST_TEMPLATE/`](.github/PULL_REQUEST_TEMPLATE/). Pick one by adding `?template=table_migration.md` (etc.) to the URL of the pull request page.
+- Pull request templates for each change type are in [`.github/PULL_REQUEST_TEMPLATE/`](.github/PULL_REQUEST_TEMPLATE/). Pick one by adding `template=table_migration.md` (etc.) to the address of the pull request page: `&template=…` if it already contains `?expand=1` (as it does from GitHub Desktop), otherwise `?template=…`.
 
 ## Known deviations from the documents
 

@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         This needs a migration in `08_migrations/`. Once merged, the migration runs on **every** server at its next deployment.
-        Guide: `docs/how-to/03_changing-existing-objects-and-migrations.md`. When you open the pull request, use `?template=table_migration.md`.
+        Guide: `docs/how-to/03_changing-existing-objects-and-migrations.md`. When you open the pull request, add the template to the address: `&template=table_migration.md` if the address already contains `?expand=1` (it does when you start from GitHub Desktop), otherwise `?template=table_migration.md`.
   - type: input
     id: table
     attributes:

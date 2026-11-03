@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Vendor files in `02_third_party/` are replaced whole, never edited. When you open the pull request, use `?template=third_party_update.md`.
+        Vendor files in `02_third_party/` are replaced whole, never edited. When you open the pull request, add the template to the address: `&template=third_party_update.md` if the address already contains `?expand=1` (it does when you start from GitHub Desktop), otherwise `?template=third_party_update.md`.
   - type: dropdown
     id: vendor
     attributes:

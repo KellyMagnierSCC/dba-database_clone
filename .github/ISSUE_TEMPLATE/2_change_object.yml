@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Use this when only a view or procedure changes. If a table's columns, indexes or constraints change, use **Change a table (migration)**.
-        When you open the pull request, use `?template=change_object.md`.
+        When you open the pull request, add the template to the address: `&template=change_object.md` if the address already contains `?expand=1` (it does when you start from GitHub Desktop), otherwise `?template=change_object.md`.
   - type: input
     id: object
     attributes:
