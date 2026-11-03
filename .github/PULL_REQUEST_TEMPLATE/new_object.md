@@ -1,4 +1,7 @@
-<!-- New table, view or procedure in an existing package. Guide: docs/how-to/02_adding-objects-to-a-package.md -->
+<!-- New table, view or procedure in an existing package. Guide: docs/how-to/02_adding-objects-to-a-package.md
+     Checklists: tick only what you did. If an item doesn't apply, leave it unticked and write why on the same line.
+     CREATE OR ALTER, table guards, named constraints, USE, [dbo], file names, prefixes and generated files are
+     checked automatically: see the PR's checks, not this list. -->
 
 Closes #<!-- issue number: links this PR to the issue and closes the issue when the PR is merged -->
 
@@ -16,12 +19,10 @@ Ticket:
 
 ## Checklist
 
-- [ ] Started from `tools/templates/`, with the placeholder name replaced everywhere and the template header deleted
-- [ ] File is in `<type>/<domain>/` and named after the object, following `usp_<Domain>_<VerbNoun>` / `vw_<Domain>_<Description>` / `<Domain>_<Thing>`
-- [ ] Table: has an `IF OBJECT_ID(...) IS NULL` guard and named constraints and indexes. View or procedure: uses `CREATE OR ALTER`
-- [ ] No `USE` statement, and every object is qualified with `[dbo]`
+- [ ] Started from `tools/templates/`, with the placeholder name replaced everywhere (including constraint and index names) and the template header deleted
+- [ ] Domain chosen from the domain guide, and the name follows `usp_<Domain>_<VerbNoun>` / `vw_<Domain>_<Description>` / `<Domain>_<Thing>`
 - [ ] Cross-domain comment added if it reads another domain's objects
-- [ ] `object_manifest.csv` row added, with `PackageName` copied exactly, `DependsOn` filled in and `DeployOrder` after its dependencies
+- [ ] `object_manifest.csv` row added, with `PackageName` copied exactly, `DependsOn` listing everything it reads or calls, and `DeployOrder` after its dependencies
 - [ ] `.\tools\generate_deploy.ps1` run. The diff shows one new `:r` line in the package script and in `deploy_all.sql`, and one new metadata row
 
 ## Testing

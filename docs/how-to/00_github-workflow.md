@@ -66,6 +66,7 @@ git checkout -b migration/42-cpu-history-add-servername
 | `vendor/` | Vendor code update |
 | `fix/` | Something broken |
 | `docs/` | Documentation only |
+| `tooling/` | Scripts in `tools/` or GitHub workflows, with no SQL object changes |
 
 **One issue per branch, and one branch per pull request.** Small, single-purpose pull requests are easier to review, and easier to revert if something goes wrong.
 
@@ -96,6 +97,16 @@ git merge origin/main
 
 If the merge conflicts on **generated files** (`09_deployment/**`, `10_metadata/apply_extended_properties.sql`), don't fix them by hand. Resolve the conflicts in the CSV files, run `.\tools\generate_deploy.ps1`, and commit the regenerated output.
 
+**Check your change against the coding standards.** From the repository root:
+
+```powershell
+.\tools\check_standards.ps1
+```
+
+It checks every object file and migration against the repository's rules, such as `CREATE OR ALTER`, table guards, named constraints and manifest coverage, and prints each problem as `file:line  rule  message`. The full rule list is at the top of the script. The same check runs automatically on every pull request, together with a check that the generated files are up to date, and a pull request that fails either one can't be merged.
+
+Violations that existed before the check was introduced are listed in `tools/standards_exceptions.csv`. Don't add to that list to get a change through. If you fix one, delete its row: the check fails on an exception that no longer applies, so the list only shrinks.
+
 **Test your branch in your own database.** Before you open the pull request, deploy your branch to a non-production instance, into a database that only you use. The deploy scripts take the database name as a variable, so each DBA can keep a copy on the shared dev server:
 
 ```
@@ -121,7 +132,7 @@ Don't deploy a branch into a database that other people use, including the team'
    For example: `https://github.com/SurreyCountyCouncil/dba-database/compare/main...migration/42-cpu-history-add-servername?template=table_migration.md`
 3. Title it the same way as the commit: `CPU_Utilisation_History: add ServerName column`.
 4. In the description, write **`Closes #42`**. This links the PR to the issue and closes the issue automatically when the PR is merged.
-5. Work through the template's checklist. Tick only what you've actually done. If an item doesn't apply, leave it unticked and say why.
+5. Work through the template's checklist. Tick only what you've actually done. If an item doesn't apply, leave it unticked and write why on the same line, for example `**N/A:** no new dependencies`. A tick means "done", so an unticked item with a reason tells the reviewer more than a tick would. The coding standards and generated-file checks aren't in the checklists: they run once the PR is open, and their result appears in the PR's checks section.
 6. Reviewers are requested automatically. `.github/CODEOWNERS` asks the DevOps Team to review every PR, and at least one approval from a code owner is needed before merging. You can't approve your own PR.
 
 If the work isn't finished but you'd like early feedback, open it as a **Draft pull request**.
@@ -191,6 +202,7 @@ Done once when the repository is created. The workflow above relies on these set
 | Give the DevOps Team **Write** access | Settings → Collaborators and teams | Lets the team push branches and review. `CODEOWNERS` only works for teams with write access |
 | Allow only **squash merging** | Settings → General → Pull Requests | One commit per change |
 | Automatically delete head branches | Settings → General → Pull Requests | Keeps the branch list clean |
+| In the ruleset on `main`, **require status checks to pass** and add `check` (the job in `.github/workflows/standards.yml`). It appears in the list after the workflow has run once | Settings → Rules → Rulesets | A pull request that breaks the coding standards, or has out-of-date generated files, can't be merged |
 | Create the labels `new-object`, `change-object`, `migration`, `new-package`, `third-party`, `bug`, `docs` | Issues → Labels | The issue templates apply these labels. A label that doesn't exist in the repo isn't applied |
 
 ## Quick reference

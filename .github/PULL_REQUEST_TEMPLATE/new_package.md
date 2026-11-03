@@ -1,4 +1,5 @@
-<!-- New deployment package. Guide: docs/how-to/01_adding-a-new-package.md -->
+<!-- New deployment package. Guide: docs/how-to/01_adding-a-new-package.md
+     Checklists: tick only what you did. If an item doesn't apply, leave it unticked and write why on the same line. -->
 
 Closes #<!-- issue number: links this PR to the issue and closes the issue when the PR is merged -->
 

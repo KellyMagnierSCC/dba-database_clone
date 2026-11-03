@@ -1,5 +1,6 @@
 <!-- Change to an existing table using 08_migrations. Guide: docs/how-to/03_changing-existing-objects-and-migrations.md, Part B.
-     Once merged, this migration runs on EVERY server at its next deployment. Review it with that in mind. -->
+     Once merged, this migration runs on EVERY server at its next deployment. Review it with that in mind.
+     Checklists: tick only what you did. If an item doesn't apply, leave it unticked and write why on the same line. -->
 
 Closes #<!-- issue number: links this PR to the issue and closes the issue when the PR is merged -->
 
