@@ -31,7 +31,7 @@ GO
 
 -- 03_types (none yet) (0 objects)
 
--- 04_tables (26 objects)
+-- 04_tables (25 objects)
 :r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
@@ -48,7 +48,6 @@ GO
 :r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingTree.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_AcceptedRisk.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_BaselineRule.sql
-:r $(RepoRoot)\04_tables\waitstats\WaitStats_History.sql
 :r $(RepoRoot)\04_tables\waitstats\WaitStats_Capture_History.sql
 :r $(RepoRoot)\04_tables\activity\WhoIsActive_ResultSet.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestQueries.sql
@@ -59,19 +58,7 @@ GO
 :r $(RepoRoot)\04_tables\instance\LogUsage_History.sql
 :r $(RepoRoot)\04_tables\instance\LogGrowth_History.sql
 
--- 08_migrations (3 migrations, run after the tables exist and before the views and procedures that use them)
-:r $(RepoRoot)\08_migrations\20261028_01_LogUsage_History_DropLegacyCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_01_LogUsage_History_DropLegacyCaptureProc', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261028_02_LogUsage_History_DropLegacyLogSizeTable.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_02_LogUsage_History_DropLegacyLogSizeTable', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261028_03_LogGrowth_History_DropLegacyLogGrowthTable.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_03_LogGrowth_History_DropLegacyLogGrowthTable', N'deploy_all');
-GO
+-- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
 
 -- 05_views (62 objects)
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql

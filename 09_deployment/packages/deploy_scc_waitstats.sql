@@ -3,7 +3,7 @@
 -- ============================================================================
 -- Wait statistics history capture and views.
 --
--- Own objects: 14   Vendor objects: 0   Pulled from other packages: 0
+-- Own objects: 13   Vendor objects: 0   Pulled from other packages: 0
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
 -- sqlcmd:
@@ -19,7 +19,6 @@ GO
 USE [$(DatabaseName)]
 GO
 
-:r $(RepoRoot)\04_tables\waitstats\WaitStats_History.sql
 :r $(RepoRoot)\04_tables\waitstats\WaitStats_Capture_History.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_BenignWaits.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Current.sql
