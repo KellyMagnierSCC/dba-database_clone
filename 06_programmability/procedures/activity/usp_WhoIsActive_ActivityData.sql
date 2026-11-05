@@ -4,7 +4,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[usp_WhoIsActive_ActivityData]
+CREATE OR ALTER PROCEDURE [dbo].[usp_WhoIsActive_ActivityData]
 (
     @CaptureReason VARCHAR(30)   = 'Scheduled',  -- 'Scheduled' | 'LogPressure' | 'Test' ...
     @CaptureDBName SYSNAME       = NULL,         -- database that triggered the capture, if any
