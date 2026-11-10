@@ -31,7 +31,7 @@ GO
 
 -- 03_types (none yet) (0 objects)
 
--- 04_tables (24 objects)
+-- 04_tables (25 objects)
 :r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
@@ -48,7 +48,8 @@ GO
 :r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_AcceptedRisk.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_BaselineRule.sql
-:r $(RepoRoot)\04_tables\waitstats\WaitStats_History.sql
+:r $(RepoRoot)\04_tables\waitstats\WaitStats_Capture_History.sql
+:r $(RepoRoot)\04_tables\activity\WhoIsActive_ResultSet.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestQueries.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestRuns.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestDurations.sql
@@ -58,35 +59,14 @@ GO
 :r $(RepoRoot)\04_tables\instance\LogGrowth_History.sql
 
 -- 08_migrations (5 migrations, run after the tables exist and before the views and procedures that use them)
-:r $(RepoRoot)\08_migrations\20261028_01_LogUsage_History_DropLegacyCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_01_LogUsage_History_DropLegacyCaptureProc', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261028_02_LogUsage_History_DropLegacyLogSizeTable.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_02_LogUsage_History_DropLegacyLogSizeTable', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261028_03_LogGrowth_History_DropLegacyLogGrowthTable.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261028_03_LogGrowth_History_DropLegacyLogGrowthTable', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261110_01_Activity_Session_History_DropOldCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261110_01_Activity_Session_History_DropOldCaptureProc', N'deploy_all');
-GO
-:r $(RepoRoot)\08_migrations\20261110_02_Blocking_Session_History_DropOldCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261110_02_Blocking_Session_History_DropOldCaptureProc', N'deploy_all');
-GO
+-- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
 
--- 05_views (56 objects)
-:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerBucket_5mins.sql
-:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
+-- 05_views (61 objects)
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestRun.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestFindings.sql
-:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockingTree_LastCollection.sql
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_HighUsage_Now.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_History_15minute_Interval.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_UsageByDatabase.sql
@@ -127,11 +107,18 @@ GO
 :r $(RepoRoot)\05_views\rcsi\vw_RCSI_VersionStore_Sessions.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Mandatory.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Sysadmin.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_BenignWaits.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Current.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Captures.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Delta.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_RollingDelta.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_DailyTrend.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_ByCategory.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_CaptureHealth.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerBucket.sql
-:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerDay.sql
 :r $(RepoRoot)\05_views\workload_metrics\vw_WorkloadMetricsComparison.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerDay.sql
+:r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Top5WaitsPerBucket_5mins.sql
 :r $(RepoRoot)\05_views\admin\vw_Admin_BackupRestoreEstimate.sql
 :r $(RepoRoot)\05_views\admin\vw_Admin_CommvaultLastBackups.sql
 :r $(RepoRoot)\05_views\instance\vw_Instance_LogUsage_Latest.sql
