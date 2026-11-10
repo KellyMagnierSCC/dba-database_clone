@@ -4,7 +4,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER PROCEDURE [dbo].[usp_WhoIsActive_ActivityData]
+CREATE OR ALTER PROCEDURE [dbo].[usp_Monitor_CaptureActivity]
 (
     @CaptureReason VARCHAR(30)   = 'Scheduled',  -- 'Scheduled' | 'LogPressure' | 'Test' ...
     @CaptureDBName SYSNAME       = NULL,         -- database that triggered the capture, if any
@@ -57,7 +57,7 @@ CREATE TABLE #wia_plans
              @sort_order           = '[blocked_session_count] DESC, [session_id] ASC',
 			 @output_column_list   = '[collection_time][dd hh:mm:ss.mss][login_time][login_name][session_id][wait_info][blocking_session_id][blocked_session_count][status][open_tran_count][tran_start_time][tran_log_writes][host_name][database_name][program_name][start_time][sql_text][sql_command][query_plan][reads][physical_reads][used_memory][cpu][tempdb_allocations][tempdb_current][additional_info]',
              @destination_table    = '#wia_plans';
-        INSERT INTO dbo.WhoIsActive_ActivityData
+        INSERT INTO dbo.Activity_Session_History
         (
             [collection_time], [dd hh:mm:ss.mss], [login_time], [login_name], [session_id],
             [wait_info], [blocking_session_id], [blocked_session_count], [status], [open_tran_count],
@@ -117,7 +117,7 @@ CREATE TABLE #wia_plans
              @output_column_list   = '[collection_time][dd hh:mm:ss.mss][login_time][login_name][session_id][wait_info][blocking_session_id][blocked_session_count][status][open_tran_count][tran_start_time][tran_log_writes][host_name][database_name][program_name][start_time][sql_text][sql_command][reads][physical_reads][used_memory][cpu][tempdb_allocations][tempdb_current][additional_info]',
              @destination_table    = '#wia';
 
-        INSERT INTO dbo.WhoIsActive_ActivityData
+        INSERT INTO dbo.Activity_Session_History
         (
             [collection_time], [dd hh:mm:ss.mss], [login_time], [login_name], [session_id],
             [wait_info], [blocking_session_id], [blocked_session_count], [status], [open_tran_count],

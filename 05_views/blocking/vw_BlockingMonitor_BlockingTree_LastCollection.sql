@@ -32,7 +32,7 @@ SELECT TOP (1000) [BLOCKING_TREE]
       ,[request_id]
       ,[sql_command]
       ,[collection_time]
-  FROM [dbo].[WhoIsActive_BlockingTree]
-  where collection_time = (select max(collection_time) from [WhoIsActive_BlockingTree])
+  FROM [dbo].[Blocking_Tree_History]
+  where collection_time = (select max(collection_time) from [dbo].[Blocking_Tree_History])
   order by collection_time
 GO

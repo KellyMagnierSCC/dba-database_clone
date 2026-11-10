@@ -2,9 +2,9 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID(N'[dbo].[WhoIsActive_BlockingData]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Blocking_Session_History]', N'U') IS NULL
 BEGIN
-CREATE TABLE [dbo].[WhoIsActive_BlockingData](
+CREATE TABLE [dbo].[Blocking_Session_History](
 	[collection_time] [datetime] NOT NULL,
 	[start_time] [datetime] NOT NULL,
 	[session_id] [smallint] NOT NULL,

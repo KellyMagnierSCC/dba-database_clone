@@ -1,10 +1,10 @@
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID(N'[dbo].[WhoIsActive_ActivityData]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Activity_Session_History]', N'U') IS NULL
 BEGIN
-CREATE TABLE [dbo].[WhoIsActive_ActivityData](
+CREATE TABLE [dbo].[Activity_Session_History](
 	[collection_time] [datetime] NOT NULL,
 	[dd hh:mm:ss.mss] [varchar](8000) NULL,
 	[login_time] [datetime] NULL,
@@ -31,7 +31,7 @@ CREATE TABLE [dbo].[WhoIsActive_ActivityData](
 	[tempdb_allocations] [varchar](50) NULL,
 	[tempdb_current] [varchar](50) NULL,
 	[additional_info] [xml] NULL,
-	-- set by usp_WhoIsActive_ActivityData, not by sp_WhoIsActive
+	-- set by usp_Monitor_CaptureActivity, not by sp_WhoIsActive
 	[CaptureReason] [varchar](30) NULL,
 	[CaptureDBName] [sysname] NULL,
 	[CaptureDetail] [nvarchar](200) NULL

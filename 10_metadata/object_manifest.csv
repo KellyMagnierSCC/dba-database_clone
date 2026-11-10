@@ -16,26 +16,25 @@ Table,dbo,RCSI_ActiveTransactions_Extended_History,04_tables/rcsi/RCSI_ActiveTra
 Table,dbo,RCSI_ActiveTransactions_History,04_tables/rcsi/RCSI_ActiveTransactions_History.sql,rcsi,SCC_RCSI - Snapshot Isolation Monitoring,FALSE,,,380
 Table,dbo,RCSI_TempdbUsage_History,04_tables/rcsi/RCSI_TempdbUsage_History.sql,rcsi,SCC_RCSI - Snapshot Isolation Monitoring,FALSE,,,390
 Table,dbo,RCSI_VersionStoreUsage_History,04_tables/rcsi/RCSI_VersionStoreUsage_History.sql,rcsi,SCC_RCSI - Snapshot Isolation Monitoring,FALSE,,,400
-Table,dbo,WhoIsActive_ActivityData,04_tables/activity/WhoIsActive_ActivityData.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,410
-Table,dbo,WhoIsActive_BlockingData,04_tables/blocking/WhoIsActive_BlockingData.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,420
-Table,dbo,WhoIsActive_BlockingTree,04_tables/blocking/WhoIsActive_BlockingTree.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,430
+Table,dbo,Activity_Session_History,04_tables/activity/Activity_Session_History.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,410
+Table,dbo,Blocking_Session_History,04_tables/blocking/Blocking_Session_History.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,420
+Table,dbo,Blocking_Tree_History,04_tables/blocking/Blocking_Tree_History.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,430
 Table,dbo,Scc_AcceptedRisk,04_tables/blitz_scc/Scc_AcceptedRisk.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,,440
 Table,dbo,Scc_BaselineRule,04_tables/blitz_scc/Scc_BaselineRule.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,,450
-Table,dbo,WaitStats_Capture_History,04_tables/waitstats/WaitStats_Capture_History.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,,460
-Table,dbo,WhoIsActive_ResultSet,04_tables/activity/WhoIsActive_ResultSet.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,,470
+Table,dbo,WaitStats_History,04_tables/waitstats/WaitStats_History.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,,460
 Table,dbo,WorkloadMetricsTestQueries,04_tables/workload_metrics/WorkloadMetricsTestQueries.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,,480
 Table,dbo,WorkloadMetricsTestRuns,04_tables/workload_metrics/WorkloadMetricsTestRuns.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,,490
 Table,dbo,WorkloadMetricsTestDurations,04_tables/workload_metrics/WorkloadMetricsTestDurations.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,WorkloadMetricsTestQueries;WorkloadMetricsTestRuns,500
 Table,dbo,WorkloadMetricsTestIOStats,04_tables/workload_metrics/WorkloadMetricsTestIOStats.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,WorkloadMetricsTestQueries;WorkloadMetricsTestRuns,510
 Table,dbo,WorkloadMetricsTestWaitStats,04_tables/workload_metrics/WorkloadMetricsTestWaitStats.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,WorkloadMetricsTestQueries;WorkloadMetricsTestRuns,520
-View,dbo,vw_ActivityMonitor_BlockedSessionCount_Last5Runs,05_views/activity/vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_ActivityData,540
-View,dbo,vw_ActivityMonitor_Sessions_LastCollection,05_views/activity/vw_ActivityMonitor_Sessions_LastCollection.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_ActivityData,560
-View,dbo,vw_ActivityMonitor_SessionsOver60Min_LastCollection,05_views/activity/vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_ActivityData,550
+View,dbo,vw_BlockingMonitor_BlockedSessionCount_Last5Runs,05_views/blocking/vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Activity_Session_History,540
+View,dbo,vw_ActivityMonitor_Sessions_LastCollection,05_views/activity/vw_ActivityMonitor_Sessions_LastCollection.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Activity_Session_History,560
+View,dbo,vw_ActivityMonitor_SessionsOver60Min_LastCollection,05_views/activity/vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Activity_Session_History,550
 View,dbo,vw_Admin_BackupRestoreEstimate,05_views/admin/vw_Admin_BackupRestoreEstimate.sql,admin,SCC_Admin - Backup and Administration,FALSE,,,1060
 View,dbo,vw_Admin_CommvaultLastBackups,05_views/admin/vw_Admin_CommvaultLastBackups.sql,admin,SCC_Admin - Backup and Administration,FALSE,,,1070
 View,dbo,vw_Blitz_LatestFindings,05_views/blitz_scc/vw_Blitz_LatestFindings.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,Blitz_Finding;vw_Blitz_LatestRun,580
 View,dbo,vw_Blitz_LatestRun,05_views/blitz_scc/vw_Blitz_LatestRun.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,Blitz_Run,570
-View,dbo,vw_BlockingMonitor_BlockingTree_LastCollection,05_views/blocking/vw_BlockingMonitor_BlockingTree_LastCollection.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_BlockingTree,600
+View,dbo,vw_BlockingMonitor_BlockingTree_LastCollection,05_views/blocking/vw_BlockingMonitor_BlockingTree_LastCollection.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Blocking_Tree_History,600
 View,dbo,vw_CPU_HighUsage_Now,05_views/cpu/vw_CPU_HighUsage_Now.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,,610
 View,dbo,vw_CPU_History_15minute_Interval,05_views/cpu/vw_CPU_History_15minute_Interval.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,CPU_Utilisation_History,620
 View,dbo,vw_CPU_TopSessions,05_views/cpu/vw_CPU_TopSessions.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,,640
@@ -76,25 +75,19 @@ View,dbo,vw_RCSI_VersionStore_Sessions,05_views/rcsi/vw_RCSI_VersionStore_Sessio
 View,dbo,vw_RCSI_VersionStoreUsage,05_views/rcsi/vw_RCSI_VersionStoreUsage.sql,rcsi,SCC_RCSI - Snapshot Isolation Monitoring,FALSE,,,970
 View,dbo,vw_Scc_ComplianceFailures_Mandatory,05_views/blitz_scc/vw_Scc_ComplianceFailures_Mandatory.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,Scc_AcceptedRisk;Scc_BaselineRule;vw_Blitz_LatestFindings;vw_Blitz_LatestRun,990
 View,dbo,vw_Scc_ComplianceFailures_Sysadmin,05_views/blitz_scc/vw_Scc_ComplianceFailures_Sysadmin.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,Scc_AcceptedRisk;vw_Blitz_LatestFindings;vw_Blitz_LatestRun,1000
-View,dbo,vw_WaitStats_Current,05_views/waitstats/vw_WaitStats_Current.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_BenignWaits,1010
-View,dbo,vw_WaitStats_RollingDelta,05_views/waitstats/vw_WaitStats_RollingDelta.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_Capture_History;vw_WaitStats_Delta,1045
-View,dbo,vw_WaitStats_Top5WaitsPerBucket,05_views/waitstats/vw_WaitStats_Top5WaitsPerBucket.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Delta,1049
-View,dbo,vw_WaitStats_Top5WaitsPerBucket_5mins,05_views/waitstats/vw_WaitStats_Top5WaitsPerBucket_5mins.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Delta,1052
-View,dbo,vw_WaitStats_Top5WaitsPerDay,05_views/waitstats/vw_WaitStats_Top5WaitsPerDay.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Delta,1051
-View,dbo,vw_WaitStats_BenignWaits,05_views/waitstats/vw_WaitStats_BenignWaits.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,,1005
-View,dbo,vw_WaitStats_Captures,05_views/waitstats/vw_WaitStats_Captures.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_Capture_History,1043
-View,dbo,vw_WaitStats_Delta,05_views/waitstats/vw_WaitStats_Delta.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_Capture_History;vw_WaitStats_BenignWaits;vw_WaitStats_Captures,1044
-View,dbo,vw_WaitStats_DailyTrend,05_views/waitstats/vw_WaitStats_DailyTrend.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Captures;vw_WaitStats_Delta,1046
-View,dbo,vw_WaitStats_ByCategory,05_views/waitstats/vw_WaitStats_ByCategory.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Captures;vw_WaitStats_Delta,1047
-View,dbo,vw_WaitStats_CaptureHealth,05_views/waitstats/vw_WaitStats_CaptureHealth.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,vw_WaitStats_Captures,1048
+View,dbo,vw_WaitStats_Current,05_views/waitstats/vw_WaitStats_Current.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,,1010
+View,dbo,vw_WaitStats_RollingDelta,05_views/waitstats/vw_WaitStats_RollingDelta.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_History,1020
+View,dbo,vw_WaitStats_Top5WaitsPerBucket,05_views/waitstats/vw_WaitStats_Top5WaitsPerBucket.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_History,1030
+View,dbo,vw_WaitStats_Top5WaitsPerBucket_5mins,05_views/waitstats/vw_WaitStats_Top5WaitsPerBucket_5mins.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_History,530
+View,dbo,vw_WaitStats_Top5WaitsPerDay,05_views/waitstats/vw_WaitStats_Top5WaitsPerDay.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_History,1040
 View,dbo,vw_WorkloadMetricsComparison,05_views/workload_metrics/vw_WorkloadMetricsComparison.sql,workload_metrics,SCC_Performance - Workload Metrics,FALSE,,WorkloadMetricsTestDurations;WorkloadMetricsTestQueries;WorkloadMetricsTestRuns,1050
 Procedure,dbo,usp_Monitor_CaptureCpuUtilisation,06_programmability/procedures/cpu/usp_Monitor_CaptureCpuUtilisation.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,CPU_Utilisation_History;vw_CPU_UtilLast256Min,1080
 Procedure,dbo,usp_Monitor_CaptureFileStats,06_programmability/procedures/filestat/usp_Monitor_CaptureFileStats.sql,filestat,SCC_Performance - File and IO Statistics,FALSE,,FileStat_Database_History;FileStat_Drive_History;vw_FileStat_Database_Current;vw_FileStat_Drive_Current,1090
 Procedure,dbo,usp_Monitor_CaptureRCSISnapshot,06_programmability/procedures/rcsi/usp_Monitor_CaptureRCSISnapshot.sql,rcsi,SCC_RCSI - Snapshot Isolation Monitoring,FALSE,,RCSI_ActiveTransactions_Extended_History;RCSI_ActiveTransactions_History;RCSI_TempdbUsage_History;RCSI_VersionStoreUsage_History;vw_RCSI_ActiveTransactions_Extended,1100
-Procedure,dbo,usp_Monitor_CaptureWaitStats,06_programmability/procedures/waitstats/usp_Monitor_CaptureWaitStats.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_Capture_History;vw_WaitStats_Current,1110
+Procedure,dbo,usp_Monitor_CaptureWaitStats,06_programmability/procedures/waitstats/usp_Monitor_CaptureWaitStats.sql,waitstats,SCC_Performance - Wait Statistics Monitoring,FALSE,,WaitStats_History;vw_WaitStats_Current,1110
 Procedure,dbo,usp_Run_Blitz,06_programmability/procedures/blitz_scc/usp_Run_Blitz.sql,blitz_scc,SCC_Blitz - Health Check Framework,FALSE,,Blitz_Finding;Blitz_Finding_Stage;Blitz_Run;Install-All-Scripts,1120
-Procedure,dbo,usp_WhoIsActive_ActivityData,06_programmability/procedures/activity/usp_WhoIsActive_ActivityData.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_ActivityData,1130
-Procedure,dbo,usp_WhoIsActive_BlockingData,06_programmability/procedures/blocking/usp_WhoIsActive_BlockingData.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,WhoIsActive_BlockingData,1140
+Procedure,dbo,usp_Monitor_CaptureActivity,06_programmability/procedures/activity/usp_Monitor_CaptureActivity.sql,activity,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Activity_Session_History,1130
+Procedure,dbo,usp_Monitor_CaptureBlocking,06_programmability/procedures/blocking/usp_Monitor_CaptureBlocking.sql,blocking,SCC_WhoisActive - Activity and Blocking Monitoring,FALSE,,Blocking_Session_History;Blocking_Tree_History,1140
 Procedure,dbo,usp_Alert_HighCpu,06_programmability/procedures/cpu/usp_Alert_HighCpu.sql,cpu,SCC_Performance - CPU Monitoring,FALSE,,vw_CPU_UtilLast256Min,1150
 Procedure,dbo,usp_Alert_LongRunningTransactions,06_programmability/procedures/query/usp_Alert_LongRunningTransactions.sql,query,SCC_Performance - Instance Diagnostics,FALSE,,vw_Query_ActiveTransactionsAlert,1160
 Table,dbo,LogUsage_History,04_tables/instance/LogUsage_History.sql,instance,SCC_Performance - Transaction Log Monitoring,FALSE,,,525

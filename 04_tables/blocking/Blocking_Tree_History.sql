@@ -2,9 +2,9 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID(N'[dbo].[WhoIsActive_BlockingTree]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Blocking_Tree_History]', N'U') IS NULL
 BEGIN
-CREATE TABLE [dbo].[WhoIsActive_BlockingTree](
+CREATE TABLE [dbo].[Blocking_Tree_History](
 	[BLOCKING_TREE] [nvarchar](max) NULL,
 	[dd hh:mm:ss.mss] [varchar](8000) NULL,
 	[wait_info] [nvarchar](4000) NULL,

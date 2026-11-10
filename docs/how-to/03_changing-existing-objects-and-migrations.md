@@ -220,9 +220,9 @@ All of these use the same header and guard approach as the example above.
 
 ```sql
 IF EXISTS (SELECT 1 FROM sys.columns
-           WHERE object_id = OBJECT_ID(N'dbo.WhoIsActive_ActivityData')
+           WHERE object_id = OBJECT_ID(N'dbo.Activity_Session_History')
              AND name = N'wait_info' AND max_length <> -1)   -- -1 = (max)
-    ALTER TABLE [dbo].[WhoIsActive_ActivityData] ALTER COLUMN [wait_info] [nvarchar](max) NULL;
+    ALTER TABLE [dbo].[Activity_Session_History] ALTER COLUMN [wait_info] [nvarchar](max) NULL;
 ```
 
 `ALTER COLUMN` must restate the column's nullability. If you leave out `NULL` or `NOT NULL`, the column becomes nullable.

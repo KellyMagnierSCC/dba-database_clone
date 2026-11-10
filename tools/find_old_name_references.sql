@@ -59,7 +59,9 @@ INSERT @Old (OldName) VALUES
     (N'usp_CheckActiveTransactionAlert'),
     (N'LogSize_Snapshot_History'),
     (N'LogGrowth_Event_History'),
-    (N'usp_Capture_LogSnapshot_History');
+    (N'usp_Capture_LogSnapshot_History'),
+    (N'usp_WhoIsActive_ActivityData'),
+    (N'usp_WhoIsActive_BlockingData');
 
 SELECT 'AgentJobStep' AS FoundIn, j.name AS JobName, s.step_id, s.step_name, o.OldName
 FROM msdb.dbo.sysjobsteps AS s
