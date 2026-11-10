@@ -25,20 +25,10 @@ GO
 -- 02_third_party (1, from ThirdPartyRequires in packages.csv)
 :r $(RepoRoot)\02_third_party\adam_machanic\sp_WhoIsActive.sql
 
-:r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
 :r $(RepoRoot)\04_tables\activity\Activity_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
 
--- 08_migrations (2)
-:r $(RepoRoot)\08_migrations\20261110_01_Activity_Session_History_DropOldCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261110_01_Activity_Session_History_DropOldCaptureProc', N'deploy_scc_whoisactive');
-GO
-:r $(RepoRoot)\08_migrations\20261110_02_Blocking_Session_History_DropOldCaptureProc.sql
-GO
-INSERT [dbo].[Migration_History] (MigrationName, DeployScript) VALUES (N'20261110_02_Blocking_Session_History_DropOldCaptureProc', N'deploy_scc_whoisactive');
-GO
 
 :r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
