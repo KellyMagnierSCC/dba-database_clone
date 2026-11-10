@@ -3,7 +3,7 @@
 -- ============================================================================
 -- Activity and blocking capture tables and views built around sp_WhoIsActive.
 --
--- Own objects: 10   Vendor objects: 1   Pulled from other packages: 0
+-- Own objects: 9   Vendor objects: 1   Pulled from other packages: 0
 -- Vendor objects: sp_WhoIsActive
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
@@ -23,15 +23,14 @@ GO
 -- 02_third_party (1, from ThirdPartyRequires in packages.csv)
 :r $(RepoRoot)\02_third_party\adam_machanic\sp_WhoIsActive.sql
 
-:r $(RepoRoot)\04_tables\activity\WhoIsActive_ActivityData.sql
-:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingData.sql
-:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingTree.sql
-:r $(RepoRoot)\04_tables\activity\WhoIsActive_ResultSet.sql
-:r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql
+:r $(RepoRoot)\04_tables\activity\Activity_Session_History.sql
+:r $(RepoRoot)\04_tables\blocking\Blocking_Session_History.sql
+:r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
 :r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockingTree_LastCollection.sql
-:r $(RepoRoot)\06_programmability\procedures\activity\usp_WhoIsActive_ActivityData.sql
-:r $(RepoRoot)\06_programmability\procedures\blocking\usp_WhoIsActive_BlockingData.sql
+:r $(RepoRoot)\06_programmability\procedures\activity\usp_Monitor_CaptureActivity.sql
+:r $(RepoRoot)\06_programmability\procedures\blocking\usp_Monitor_CaptureBlocking.sql
 
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql

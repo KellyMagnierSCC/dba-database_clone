@@ -10,6 +10,3 @@ SC006,04_tables/workload_metrics/WorkloadMetricsTestIOStats.sql,Unnamed DEFAULT.
 SC006,04_tables/workload_metrics/WorkloadMetricsTestQueries.sql,Two unnamed DEFAULTs. Naming them on existing servers needs a migration
 SC006,04_tables/workload_metrics/WorkloadMetricsTestRuns.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/workload_metrics/WorkloadMetricsTestWaitStats.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
-SC007,05_views/activity/vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql,Extended-property calls left from the original export. Remove them in a change_object PR
-SC008,05_views/blocking/vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql,Duplicate of the activity view under the naming reference's name. Decide which name is correct and remove the other file
-SC008,05_views/blocking/vw_BlockingMonitor_BlockingTree.sql,In the naming reference but has no manifest row. Add the row or remove the file

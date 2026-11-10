@@ -1,7 +1,7 @@
 ﻿ObjectType,OldName,NewName,Rationale
-Table,SP_WHOISACTIVE_ActivityData,WhoIsActive_ActivityData,Remove SP_ prefix --- not a proc
-Table,SP_WHOISACTIVE_BlockingData,WhoIsActive_BlockingData,Consistent with above
-Table,SP_WHOISACTIVE_BlockingTree,WhoIsActive_BlockingTree,Consistent with above
+Table,SP_WHOISACTIVE_ActivityData,Activity_Session_History,Subject not tool name; _History like the other capture tables
+Table,SP_WHOISACTIVE_BlockingData,Blocking_Session_History,Consistent with above
+Table,SP_WHOISACTIVE_BlockingTree,Blocking_Tree_History,Consistent with above
 Table,FileStat_DB_History,FileStat_Database_History,Spell out DB
 Table,BlitzRun,Blitz_Run,Underscore separator
 Table,BlitzFinding,Blitz_Finding,Underscore separator
@@ -12,7 +12,7 @@ View,vw_ActivityMonitor_BlockedSesionCount_last5Runs,vw_BlockingMonitor_BlockedS
 View,vw_ActivityMonitor_Sessions_lastcollection,vw_ActivityMonitor_Sessions_LastCollection,PascalCase suffix
 View,vw_ActivityMonitor_SessionsGreater60Mins_lastcollection,vw_ActivityMonitor_SessionsOver60Min_LastCollection,Greater→Over; consistent suffix
 View,vw_BlockingMonitor_Blockingtree_lastcollection,vw_BlockingMonitor_BlockingTree_LastCollection,Keep BlockingMonitor prefix; matches source
-View,vw_BlockingMonitor_Blockingtree,vw_BlockingMonitor_BlockingTree,Keep BlockingMonitor prefix; matches source
+View,vw_BlockingMonitor_Blockingtree,vw_BlockingMonitor_BlockingTree,Renamed then dropped in change 22 (read WhoIsActive_ResultSet); kept so find_old_name_references.sql still finds callers
 View,vw_FileStat_DB_Current,vw_FileStat_Database_Current,Spell out DB
 View,vw_FileStat_DB_Delta,vw_FileStat_Database_Delta,Spell out DB
 View,vw_FileStat_DB_PctChange,vw_FileStat_Database_PctChange,Spell out DB
@@ -50,3 +50,8 @@ Procedure,usp_CheckActiveTransactionAlert,usp_Alert_LongRunningTransactions,New 
 Table,LogSize_Snapshot_History,LogUsage_History,Planned name from the naming reference; replaced not renamed (data ages out)
 Table,LogGrowth_Event_History,LogGrowth_History,Log file growth only; replaced not renamed (data ages out)
 Procedure,usp_Capture_LogSnapshot_History,usp_Monitor_CaptureLogUsage,usp_Monitor_Capture pattern; growth capture split into usp_Monitor_CaptureLogGrowth
+Table,WhoIsActive_ActivityData,Activity_Session_History,Interim name on main; final name in change 22
+Table,WhoIsActive_BlockingData,Blocking_Session_History,Interim name on main; final name in change 22
+Table,WhoIsActive_BlockingTree,Blocking_Tree_History,Interim name on main; final name in change 22
+Procedure,usp_WhoIsActive_ActivityData,usp_Monitor_CaptureActivity,usp_Monitor_Capture pattern; tool name out of the function slot
+Procedure,usp_WhoIsActive_BlockingData,usp_Monitor_CaptureBlocking,usp_Monitor_Capture pattern; tool name out of the function slot

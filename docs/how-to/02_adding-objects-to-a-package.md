@@ -82,7 +82,7 @@ The guard means that **re-running a table file never changes an existing table.*
 **Reading another domain's objects.** If a view or procedure reads objects from a different domain, add a comment at the top that says so:
 
 ```sql
--- Cross-domain: reads dbo.WaitStats_History (waitstats)
+-- Cross-domain: reads dbo.WaitStats_Capture_History (waitstats)
 ```
 
 ### Step 3: Add the manifest row

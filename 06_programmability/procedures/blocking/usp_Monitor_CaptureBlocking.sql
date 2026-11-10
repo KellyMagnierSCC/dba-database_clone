@@ -4,7 +4,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER PROCEDURE dbo.usp_WhoIsActive_BlockingData
+CREATE OR ALTER PROCEDURE [dbo].[usp_Monitor_CaptureBlocking]
 (
     @CaptureBlockingData BIT = 1,   -- 0 = skip the blocking-detail table
     @BlockingOnly        BIT = 1,   -- 1 = detail table gets only blocked/leader sessions; 0 = every session (as old step 1)
@@ -20,6 +20,9 @@ BEGIN
 
     -- Overlap guard: with heavy blocking a plan-collecting capture can be slow,
     -- and stacked runs would add to the problem.
+    -- The lock name is still the old procedure name, usp_WhoIsActive_BlockingData, on purpose:
+    -- during cutover an Agent job step calling the old procedure and one calling this one
+    -- take the same lock, so they cannot overlap. Keep it unchanged.
     EXEC @rc = sys.sp_getapplock
          @Resource    = N'usp_WhoIsActive_BlockingData',
          @LockMode    = N'Exclusive',
@@ -104,7 +107,7 @@ BEGIN
         ------------------------------------------------------------
         IF @CaptureBlockingData = 1 AND (@HasBlocking = 1 OR @BlockingOnly = 0)
         BEGIN
-            INSERT INTO dbo.WhoIsActive_BlockingData
+            INSERT INTO dbo.Blocking_Session_History
                 ([collection_time], [start_time], [session_id], [sql_text], [query_plan],
                  [wait_info], [blocking_session_id], [blocked_session_count], [additional_info])
             SELECT w.[collection_time], w.[start_time], w.[session_id], w.[sql_text], w.[query_plan],
@@ -156,7 +159,7 @@ BEGIN
                        AND r.[blocking_session_id] = b.[session_id]
                 WHERE  r.[blocking_session_id] <> r.[session_id]
             )
-            INSERT INTO dbo.WhoIsActive_BlockingTree
+            INSERT INTO dbo.Blocking_Tree_History
             (
                 [BLOCKING_TREE], [dd hh:mm:ss.mss], [wait_info], [blocked_session_count], [blocking_session_id],
                 [login_name], [host_name], [database_name], [program_name], [locks],
@@ -188,13 +191,3 @@ BEGIN
     EXEC sys.sp_releaseapplock @Resource = N'usp_WhoIsActive_BlockingData', @LockOwner = N'Session';
 END;
 GO
-
-/* Before dropping dbo.vw_BlockingMonitor_BlockingTree or dbo.WhoIsActive_ResultSet,
-   check nothing else uses them (run in dba; also search other jobs/reports):
-
-   SELECT referencing_entity_name = OBJECT_NAME(d.referencing_id), d.referenced_entity_name
-   FROM   sys.sql_expression_dependencies AS d
-   WHERE  d.referenced_entity_name IN (N'vw_BlockingMonitor_BlockingTree', N'WhoIsActive_ResultSet');
-
-   Also grep Agent job steps: msdb.dbo.sysjobsteps.command LIKE '%WhoIsActive_ResultSet%'
-*/

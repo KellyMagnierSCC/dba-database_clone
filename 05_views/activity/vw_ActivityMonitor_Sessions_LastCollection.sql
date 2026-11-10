@@ -19,6 +19,6 @@ GO
       ,[program_name]
       ,[start_time]
       ,cast([sql_text] as varchar(max)) as sql_text
- FROM [dbo].[WhoIsActive_ActivityData]
-  where collection_time = (select max(collection_time) from [dbo].[WhoIsActive_ActivityData])
+ FROM [dbo].[Activity_Session_History]
+  where collection_time = (select max(collection_time) from [dbo].[Activity_Session_History])
 GO

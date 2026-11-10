@@ -31,7 +31,7 @@ GO
 
 -- 03_types (none yet) (0 objects)
 
--- 04_tables (25 objects)
+-- 04_tables (24 objects)
 :r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
@@ -43,13 +43,12 @@ GO
 :r $(RepoRoot)\04_tables\rcsi\RCSI_ActiveTransactions_History.sql
 :r $(RepoRoot)\04_tables\rcsi\RCSI_TempdbUsage_History.sql
 :r $(RepoRoot)\04_tables\rcsi\RCSI_VersionStoreUsage_History.sql
-:r $(RepoRoot)\04_tables\activity\WhoIsActive_ActivityData.sql
-:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingData.sql
-:r $(RepoRoot)\04_tables\blocking\WhoIsActive_BlockingTree.sql
+:r $(RepoRoot)\04_tables\activity\Activity_Session_History.sql
+:r $(RepoRoot)\04_tables\blocking\Blocking_Session_History.sql
+:r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_AcceptedRisk.sql
 :r $(RepoRoot)\04_tables\blitz_scc\Scc_BaselineRule.sql
 :r $(RepoRoot)\04_tables\waitstats\WaitStats_Capture_History.sql
-:r $(RepoRoot)\04_tables\activity\WhoIsActive_ResultSet.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestQueries.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestRuns.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestDurations.sql
@@ -61,7 +60,7 @@ GO
 -- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
 
 -- 05_views (62 objects)
-:r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_BlockedSessionCount_Last5Runs.sql
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestRun.sql
@@ -130,8 +129,8 @@ GO
 :r $(RepoRoot)\06_programmability\procedures\rcsi\usp_Monitor_CaptureRCSISnapshot.sql
 :r $(RepoRoot)\06_programmability\procedures\waitstats\usp_Monitor_CaptureWaitStats.sql
 :r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Run_Blitz.sql
-:r $(RepoRoot)\06_programmability\procedures\activity\usp_WhoIsActive_ActivityData.sql
-:r $(RepoRoot)\06_programmability\procedures\blocking\usp_WhoIsActive_BlockingData.sql
+:r $(RepoRoot)\06_programmability\procedures\activity\usp_Monitor_CaptureActivity.sql
+:r $(RepoRoot)\06_programmability\procedures\blocking\usp_Monitor_CaptureBlocking.sql
 :r $(RepoRoot)\06_programmability\procedures\cpu\usp_Alert_HighCpu.sql
 :r $(RepoRoot)\06_programmability\procedures\query\usp_Alert_LongRunningTransactions.sql
 :r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogUsage.sql
