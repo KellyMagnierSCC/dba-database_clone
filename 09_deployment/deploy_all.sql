@@ -59,12 +59,13 @@ GO
 
 -- 08_migrations (0 migrations, run after the tables exist and before the views and procedures that use them)
 
--- 05_views (61 objects)
+-- 05_views (62 objects)
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestRun.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestFindings.sql
-:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
+:r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockingTree_LastCollection.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_HighUsage_Now.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_History_15minute_Interval.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_UsageByDatabase.sql
