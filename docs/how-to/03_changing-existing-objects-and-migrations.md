@@ -230,9 +230,9 @@ IF EXISTS (SELECT 1 FROM sys.columns
 **Rename a column:**
 
 ```sql
-IF COL_LENGTH(N'dbo.Blitz_Run', N'OldName') IS NOT NULL
-   AND COL_LENGTH(N'dbo.Blitz_Run', N'NewName') IS NULL
-    EXEC sys.sp_rename N'dbo.Blitz_Run.OldName', N'NewName', N'COLUMN';
+IF COL_LENGTH(N'dbo.HealthCheck_Run', N'OldName') IS NOT NULL
+   AND COL_LENGTH(N'dbo.HealthCheck_Run', N'NewName') IS NULL
+    EXEC sys.sp_rename N'dbo.HealthCheck_Run.OldName', N'NewName', N'COLUMN';
 ```
 
 Update every view and procedure that uses the old name in the same pull request, and check `07_jobs/` and any external reports.

@@ -1,5 +1,4 @@
-Rule,Path,Reason
-SC006,04_tables/blitz_scc/Scc_BaselineRule.sql,Unnamed PRIMARY KEY. Naming it on existing servers needs a migration (sp_rename of the generated name)
+﻿Rule,Path,Reason
 SC006,04_tables/filestat/FileStat_Database_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/filestat/FileStat_Drive_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/rcsi/RCSI_ActiveTransactions_Extended_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration

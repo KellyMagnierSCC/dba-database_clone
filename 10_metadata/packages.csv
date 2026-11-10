@@ -1,6 +1,6 @@
 ﻿PackageName,ScriptName,ThirdPartyRequires,Description
 SCC_Admin - Backup and Administration,deploy_scc_admin,,Backup / restore administration views.
-SCC_Blitz - Health Check Framework,deploy_scc_blitz,Install-All-Scripts,"Blitz run/finding tables, usp_Run_Blitz and the compliance views."
+SCC_Blitz - Health Check Framework,deploy_scc_blitz,Install-All-Scripts,"Health check run/finding tables filled from sp_Blitz, usp_Monitor_CaptureHealthCheck and the compliance views."
 SCC_Performance - CPU Monitoring,deploy_scc_cpu,,CPU utilisation history capture and views.
 SCC_Performance - File and IO Statistics,deploy_scc_filestat_io,,File/drive IO statistics history capture and views.
 SCC_Performance - Instance Diagnostics,deploy_scc_instance,,"Instance-level diagnostic views (transactions, connections, top queries, waits)."
