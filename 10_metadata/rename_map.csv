@@ -3,11 +3,11 @@ Table,SP_WHOISACTIVE_ActivityData,Activity_Session_History,Subject not tool name
 Table,SP_WHOISACTIVE_BlockingData,Blocking_Session_History,Consistent with above
 Table,SP_WHOISACTIVE_BlockingTree,Blocking_Tree_History,Consistent with above
 Table,FileStat_DB_History,FileStat_Database_History,Spell out DB
-Table,BlitzRun,Blitz_Run,Underscore separator
-Table,BlitzFinding,Blitz_Finding,Underscore separator
-Table,BlitzFinding_Stage,Blitz_Finding_Stage,Consistent with above
-Table,SccBaselineRule,Scc_BaselineRule,Underscore separator
-Table,SccAcceptedRisk,Scc_AcceptedRisk,Underscore separator
+Table,BlitzRun,HealthCheck_Run,Underscore separator
+Table,BlitzFinding,HealthCheck_Finding,Underscore separator
+Table,BlitzFinding_Stage,HealthCheck_Finding_Stage,Consistent with above
+Table,SccBaselineRule,Scc_HealthCheck_BaselineRule,Underscore separator
+Table,SccAcceptedRisk,Scc_HealthCheck_AcceptedRisk,Underscore separator
 View,vw_ActivityMonitor_BlockedSesionCount_last5Runs,vw_BlockingMonitor_BlockedSessionCount_Last5Runs,Fix typo; align prefix to blocking source it reads from
 View,vw_ActivityMonitor_Sessions_lastcollection,vw_ActivityMonitor_Sessions_LastCollection,PascalCase suffix
 View,vw_ActivityMonitor_SessionsGreater60Mins_lastcollection,vw_ActivityMonitor_SessionsOver60Min_LastCollection,Greater→Over; consistent suffix
@@ -55,3 +55,13 @@ Table,WhoIsActive_BlockingData,Blocking_Session_History,Interim name on main; fi
 Table,WhoIsActive_BlockingTree,Blocking_Tree_History,Interim name on main; final name in change 22
 Procedure,usp_WhoIsActive_ActivityData,usp_Monitor_CaptureActivity,usp_Monitor_Capture pattern; tool name out of the function slot
 Procedure,usp_WhoIsActive_BlockingData,usp_Monitor_CaptureBlocking,usp_Monitor_Capture pattern; tool name out of the function slot
+Table,Blitz_Run,HealthCheck_Run,Named for the health check; not the tool that runs it
+Table,Blitz_Finding,HealthCheck_Finding,Named for the health check; not the tool that runs it
+Table,Blitz_Finding_Stage,HealthCheck_Finding_Stage,Named for the health check; not the tool that runs it
+Table,Scc_BaselineRule,Scc_HealthCheck_BaselineRule,Keep Scc_ (our own table); HealthCheck marks the package
+Table,Scc_AcceptedRisk,Scc_HealthCheck_AcceptedRisk,Keep Scc_ (our own table); HealthCheck marks the package
+View,vw_Blitz_LatestRun,vw_HealthCheck_LatestRun,Named for the health check; not the tool that runs it
+View,vw_Blitz_LatestFindings,vw_HealthCheck_LatestFindings,Named for the health check; not the tool that runs it
+View,vw_Scc_ComplianceFailures_Mandatory,vw_Scc_HealthCheck_ComplianceFailures_Mandatory,Consistent with the Scc_HealthCheck_ tables
+View,vw_Scc_ComplianceFailures_Sysadmin,vw_Scc_HealthCheck_ComplianceFailures_Sysadmin,Consistent with the Scc_HealthCheck_ tables
+Procedure,usp_Run_Blitz,usp_Monitor_CaptureHealthCheck,usp_Monitor_Capture pattern; tool name out of the function slot

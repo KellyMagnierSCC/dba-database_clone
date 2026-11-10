@@ -2,9 +2,9 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF OBJECT_ID(N'[dbo].[Scc_AcceptedRisk]', N'U') IS NULL
+IF OBJECT_ID(N'[dbo].[Scc_HealthCheck_AcceptedRisk]', N'U') IS NULL
 BEGIN
-CREATE TABLE [dbo].[Scc_AcceptedRisk](
+CREATE TABLE [dbo].[Scc_HealthCheck_AcceptedRisk](
 	[CheckID] [int] NOT NULL,
 	[ScopeType] [varchar](20) NOT NULL,
 	[ScopeName] [sysname] NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE [dbo].[Scc_AcceptedRisk](
 	[ApprovalDate] [date] NOT NULL,
 	[ReviewByDate] [date] NOT NULL,
 	[Justification] [nvarchar](4000) NOT NULL,
- CONSTRAINT [PK_SccAcceptedRisk] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Scc_HealthCheck_AcceptedRisk] PRIMARY KEY CLUSTERED 
 (
 	[CheckID] ASC,
 	[ScopeType] ASC,

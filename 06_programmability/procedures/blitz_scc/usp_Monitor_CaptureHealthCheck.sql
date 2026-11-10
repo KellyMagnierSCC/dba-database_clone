@@ -3,9 +3,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER PROCEDURE [dbo].[usp_Run_Blitz]
+CREATE OR ALTER PROCEDURE [dbo].[usp_Monitor_CaptureHealthCheck]
 (
-    @BringThePain bit = 1,
+    @CheckAllDatabases bit = 1,   -- recorded in HealthCheck_Run; sp_Blitz's @BringThePain
     @Notes        nvarchar(4000) = NULL,
     @OutputDB     nvarchar(80)   = 'DBA'  --Name of the Database the results are to be added to
 )
@@ -15,7 +15,7 @@ BEGIN
     SET XACT_ABORT ON;
 
     DECLARE
-        @BlitzRunID    int,
+        @HealthCheckRunID int,
         @ServerName   sysname = @@SERVERNAME,
         @InstanceName sysname = ISNULL(CAST(SERVERPROPERTY('InstanceName') AS sysname),'MSSQLSERVER'),
         @SqlVersion   nvarchar(128) = CAST(SERVERPROPERTY('ProductVersion') AS nvarchar(128)),
@@ -24,13 +24,13 @@ BEGIN
     BEGIN TRY
 
         -- Register run
-        INSERT dbo.Blitz_Run
+        INSERT dbo.HealthCheck_Run
         (
             ServerName,
             InstanceName,
             SqlVersion,
             ExecutedBy,
-            BringThePain,
+            CheckAllDatabases,
             Notes
         )
         VALUES
@@ -39,28 +39,28 @@ BEGIN
             @InstanceName,
             @SqlVersion,
             @Login,
-            @BringThePain,
+            @CheckAllDatabases,
             @Notes
         );
 
-        SET @BlitzRunID = SCOPE_IDENTITY();
+        SET @HealthCheckRunID = SCOPE_IDENTITY();
 
         -- Clear staging
-        TRUNCATE TABLE dbo.Blitz_Finding_Stage;
+        TRUNCATE TABLE dbo.HealthCheck_Finding_Stage;
 
         -- Let sp_Blitz write directly
         EXEC dbo.sp_Blitz
             @CheckServerInfo = 1,
-            @BringThePain = 1, --@BringThePain,
+            @BringThePain = 1, --@CheckAllDatabases,
             @OutputType = 'TABLE',
             @OutputDatabaseName = @OutputDB,
             @OutputSchemaName = 'dbo',
-            @OutputTableName = 'Blitz_Finding_Stage';
+            @OutputTableName = 'HealthCheck_Finding_Stage';
 
         -- Persist into history table
-        INSERT dbo.Blitz_Finding
+        INSERT dbo.HealthCheck_Finding
         (
-            BlitzRunID,
+            HealthCheckRunID,
             CheckID,
             Priority,
 			FindingsGroup,
@@ -70,7 +70,7 @@ BEGIN
             URL
         )
         SELECT
-            @BlitzRunID,
+            @HealthCheckRunID,
             CheckID,
             Priority,
 			FindingsGroup,
@@ -78,14 +78,14 @@ BEGIN
             DatabaseName,
             Details,
             URL
-        FROM dbo.Blitz_Finding_Stage;
+        FROM dbo.HealthCheck_Finding_Stage;
 
     END TRY
     BEGIN CATCH
     DECLARE @ErrMsg nvarchar(4000) = ERROR_MESSAGE();
 
     RAISERROR (
-        'usp_Run_Blitz failed: %s',
+        'usp_Monitor_CaptureHealthCheck failed: %s',
         16,   -- severity
         1,    -- state
         @ErrMsg

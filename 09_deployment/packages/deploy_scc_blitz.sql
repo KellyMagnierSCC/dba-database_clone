@@ -1,7 +1,7 @@
 ﻿-- ============================================================================
 -- deploy_scc_blitz.sql - SCC_Blitz - Health Check Framework
 -- ============================================================================
--- Blitz run/finding tables, usp_Run_Blitz and the compliance views.
+-- Health check run/finding tables filled from sp_Blitz, usp_Monitor_CaptureHealthCheck and the compliance views.
 --
 -- Own objects: 10   Vendor objects: 1   Pulled from other packages: 0
 -- Vendor objects: Install-All-Scripts
@@ -23,15 +23,15 @@ GO
 -- 02_third_party (1, from ThirdPartyRequires in packages.csv)
 :r $(RepoRoot)\02_third_party\brent_ozar\Install-All-Scripts.sql
 
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Scc_AcceptedRisk.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Scc_BaselineRule.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestRun.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestFindings.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Mandatory.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Sysadmin.sql
-:r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Run_Blitz.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Finding_Stage.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Run.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Finding.sql
+:r $(RepoRoot)\04_tables\blitz_scc\Scc_HealthCheck_AcceptedRisk.sql
+:r $(RepoRoot)\04_tables\blitz_scc\Scc_HealthCheck_BaselineRule.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_HealthCheck_LatestRun.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_HealthCheck_LatestFindings.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_HealthCheck_ComplianceFailures_Mandatory.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_HealthCheck_ComplianceFailures_Sysadmin.sql
+:r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Monitor_CaptureHealthCheck.sql
 
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql
