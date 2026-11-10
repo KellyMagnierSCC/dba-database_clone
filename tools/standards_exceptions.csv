@@ -6,7 +6,6 @@ SC006,04_tables/rcsi/RCSI_ActiveTransactions_Extended_History.sql,Unnamed DEFAUL
 SC006,04_tables/rcsi/RCSI_ActiveTransactions_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/rcsi/RCSI_TempdbUsage_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/rcsi/RCSI_VersionStoreUsage_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
-SC006,04_tables/waitstats/WaitStats_History.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/workload_metrics/WorkloadMetricsTestIOStats.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
 SC006,04_tables/workload_metrics/WorkloadMetricsTestQueries.sql,Two unnamed DEFAULTs. Naming them on existing servers needs a migration
 SC006,04_tables/workload_metrics/WorkloadMetricsTestRuns.sql,Unnamed DEFAULT. Naming it on existing servers needs a migration
