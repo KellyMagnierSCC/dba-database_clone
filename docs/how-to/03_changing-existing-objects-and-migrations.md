@@ -241,10 +241,10 @@ Update every view and procedure that uses the old name in the same pull request,
 
 ```sql
 IF NOT EXISTS (SELECT 1 FROM sys.indexes
-               WHERE object_id = OBJECT_ID(N'dbo.WaitStats_History')
-                 AND name = N'IX_WaitStats_History_capture_time')
-    CREATE NONCLUSTERED INDEX [IX_WaitStats_History_capture_time]
-        ON [dbo].[WaitStats_History] ([capture_time]);
+               WHERE object_id = OBJECT_ID(N'dbo.WaitStats_Capture_History')
+                 AND name = N'IX_WaitStats_Capture_History_wait_type')
+    CREATE NONCLUSTERED INDEX [IX_WaitStats_Capture_History_wait_type]
+        ON [dbo].[WaitStats_Capture_History] ([wait_type], [capture_time]);
 ```
 
 Add the same `CREATE INDEX` inside the guard in the table file.

@@ -60,6 +60,9 @@ INSERT @Old (OldName) VALUES
     (N'LogSize_Snapshot_History'),
     (N'LogGrowth_Event_History'),
     (N'usp_Capture_LogSnapshot_History'),
+    (N'WhoIsActive_ActivityData'),
+    (N'WhoIsActive_BlockingData'),
+    (N'WhoIsActive_BlockingTree'),
     (N'usp_WhoIsActive_ActivityData'),
     (N'usp_WhoIsActive_BlockingData');
 

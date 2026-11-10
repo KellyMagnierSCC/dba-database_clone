@@ -3,10 +3,8 @@
 -- ============================================================================
 -- Activity and blocking capture tables and views built around sp_WhoIsActive.
 --
--- Own objects: 9   Vendor objects: 1   Pulled from other packages: 1
+-- Own objects: 9   Vendor objects: 1   Pulled from other packages: 0
 -- Vendor objects: sp_WhoIsActive
--- Pulled from other packages: Migration_History
--- Migrations: 2 (run after the tables, before the views and procedures)
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
 -- sqlcmd:
@@ -28,8 +26,6 @@ GO
 :r $(RepoRoot)\04_tables\activity\Activity_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
-
-
 :r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
