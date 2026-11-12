@@ -39,8 +39,12 @@ WHEN NOT MATCHED BY SOURCE
     THEN DELETE
 OUTPUT $action INTO @Changes (Action);
 
-PRINT CONCAT(N'Domain_Thing_Lookup: ',
-             (SELECT COUNT(*) FROM @Changes WHERE Action = N'INSERT'), N' inserted, ',
-             (SELECT COUNT(*) FROM @Changes WHERE Action = N'UPDATE'), N' updated, ',
-             (SELECT COUNT(*) FROM @Changes WHERE Action = N'DELETE'), N' deleted.');
+-- PRINT cannot contain a subquery, so the message is built with SELECT first
+DECLARE @Msg nvarchar(400);
+SELECT @Msg = CONCAT(N'Domain_Thing_Lookup: ',
+                     COUNT(CASE WHEN Action = N'INSERT' THEN 1 END), N' inserted, ',
+                     COUNT(CASE WHEN Action = N'UPDATE' THEN 1 END), N' updated, ',
+                     COUNT(CASE WHEN Action = N'DELETE' THEN 1 END), N' deleted.')
+FROM @Changes;
+PRINT @Msg;
 GO
