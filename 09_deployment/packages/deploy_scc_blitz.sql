@@ -5,6 +5,7 @@
 --
 -- Own objects: 10   Vendor objects: 1   Pulled from other packages: 0
 -- Vendor objects: Install-All-Scripts
+-- Reference data: 2 tables (run after the views and procedures)
 --
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
 -- sqlcmd:
@@ -33,5 +34,9 @@ GO
 :r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Mandatory.sql
 :r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Sysadmin.sql
 :r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Run_Blitz.sql
+
+-- 11_reference_data (2)
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_AcceptedRisk.sql
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_BaselineRule.sql
 
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql

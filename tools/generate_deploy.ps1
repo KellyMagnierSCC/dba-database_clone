@@ -8,10 +8,15 @@
         10_metadata\packages.csv          one row per deployment package
         10_metadata\rename_map.csv        old -> new names (record of the v3 rename; no migration is generated)
         10_metadata\migration_manifest.csv  one row per 08_migrations script: file name and the object it changes
+        10_metadata\reference_data_manifest.csv  one row per 11_reference_data script: file name and the table it loads
 
     Migrations run after 04_tables and before 05_views, in file-name order. deploy_all runs every
     migration; a package script runs the migrations whose object is in that package. Each run is
     recorded in dbo.Migration_History. Every .sql file in 08_migrations must be listed.
+
+    Reference data runs last, after the procedures, in the DeployOrder of the tables it loads.
+    deploy_all runs every script; a package script runs the scripts for the tables it deploys.
+    Every .sql file in 11_reference_data must be listed, and is named after its table.
 
     Generated (do not hand-edit):
         tools\find_old_name_references.sql   diagnostic - NOT deployed
@@ -37,6 +42,8 @@ $Renames  = Join-Path $Root '10_metadata\rename_map.csv'
 $Migrations   = Join-Path $Root '10_metadata\migration_manifest.csv'
 $MigrationDir = Join-Path $Root '08_migrations'
 $MigrationLog = 'Migration_History'
+$RefData      = Join-Path $Root '10_metadata\reference_data_manifest.csv'
+$RefDataDir   = Join-Path $Root '11_reference_data'
 
 $Level1Type = @{ Table = 'TABLE'; View = 'VIEW'; Procedure = 'PROCEDURE' }
 
@@ -152,6 +159,49 @@ function Import-Migrations($Objs) {
     return , ([object[]]@($order | ForEach-Object { $byFile[$_] }))
 }
 
+function Import-ReferenceData($Objs) {
+    $rows = @(Read-Csv $RefData)
+    $tables = @{}
+    foreach ($o in $Objs) { if ($o.ObjectType -eq 'Table') { $tables[$o.ObjectName] = $o } }
+
+    $listed = New-Object 'System.Collections.Generic.HashSet[string]' ([System.StringComparer]::OrdinalIgnoreCase)
+    $refs = foreach ($r in $rows) {
+        $file = $r.DataFile.Replace('\', '/')
+        if (-not $listed.Add($file)) {
+            throw "Reference data listed twice in reference_data_manifest.csv: $file"
+        }
+        if (-not (Test-Path -LiteralPath (Join-Path $RefDataDir $file) -PathType Leaf)) {
+            throw "reference_data_manifest.csv points at a missing file: 11_reference_data\$file"
+        }
+        if (-not $tables.ContainsKey($r.ObjectName)) {
+            throw "Reference data $file loads a table that is not in object_manifest.csv: $($r.ObjectName)"
+        }
+        if ([System.IO.Path]::GetFileNameWithoutExtension($file) -cne $r.ObjectName) {
+            throw "Reference data file must be named after the table it loads: $file loads $($r.ObjectName)"
+        }
+        $t = $tables[$r.ObjectName]
+        [pscustomobject]@{
+            ObjectName  = $r.ObjectName
+            RepoPath    = '11_reference_data/' + $file
+            DeployOrder = $t.DeployOrder
+            Seq         = $t.Seq
+        }
+    }
+
+    # A data file that is not listed would silently never deploy
+    if (Test-Path -LiteralPath $RefDataDir) {
+        $unlisted = @(Get-ChildItem -LiteralPath $RefDataDir -Filter '*.sql' -Recurse -File |
+                      ForEach-Object { $_.FullName.Substring($RefDataDir.Length).TrimStart('\', '/').Replace('\', '/') } |
+                      Where-Object { -not $listed.Contains($_) })
+        if ($unlisted.Count -gt 0) {
+            throw ("Reference data not listed in reference_data_manifest.csv:`n  " + ($unlisted -join "`n  "))
+        }
+    }
+
+    # Same order as the tables, so a parent table's rows load before a child's
+    return , ([object[]]@($refs | Sort-Object -Property DeployOrder, Seq))
+}
+
 function New-Preamble([string]$Title, [string[]]$Lines) {
     $out = New-Object System.Collections.Generic.List[string]
     $out.Add($HeaderRule)
@@ -193,10 +243,10 @@ function Get-MigrationLines($Migs, [string]$Script) {
 
 # ---------------------------------------------------------------- generators
 
-function New-DeployAll($Objs, $Migs) {
+function New-DeployAll($Objs, $Migs, $Refs) {
     $out = New-Object System.Collections.Generic.List[string]
     $out.Add($HeaderRule)
-    $out.Add('-- deploy_all.sql - full deployment: folders 00-06 in order, with 08_migrations run after 04_tables (idempotent, re-runnable).')
+    $out.Add('-- deploy_all.sql - full deployment: folders 00-06 in order, with 08_migrations run after 04_tables and 11_reference_data last (idempotent, re-runnable).')
     $out.Add('-- Vendor code can also be deployed on its own with deploy_third_party.sql.')
     $out.Add($HeaderRule)
     foreach ($l in $RunNote) { $out.Add("-- $l") }
@@ -244,6 +294,10 @@ function New-DeployAll($Objs, $Migs) {
         throw ('Objects not placed in any deploy section: ' + (($missing | ForEach-Object { $_.ObjectName }) -join ', '))
     }
 
+    $out.Add("-- 11_reference_data ($($Refs.Count) tables, run after the procedures so every table and migration is in place)")
+    $out.AddRange((Get-RLines $Refs))
+    $out.Add('')
+
     $out.AddRange([string[]]@('-- 10_metadata', $MetaLine, ''))
     return ($out -join "`n")
 }
@@ -287,7 +341,7 @@ function Get-Closure($Objs, [string[]]$Seeds) {
     return $want
 }
 
-function New-Package($Pkg, $Objs, $Migs) {
+function New-Package($Pkg, $Objs, $Migs, $Refs) {
     $name = $Pkg.PackageName
     $members = @($Objs | Where-Object { $_.PackageName -eq $name -and -not $_.IsThirdParty } |
                  ForEach-Object { $_.ObjectName })
@@ -306,6 +360,7 @@ function New-Package($Pkg, $Objs, $Migs) {
     # Vendor rows have ObjectType 'ThirdParty', which is not in $Level1Type, so keep them explicitly
     $sel = @($Objs | Where-Object { $want.Contains($_.ObjectName) -and ($_.IsThirdParty -or $Level1Type.ContainsKey($_.ObjectType)) })
     $vendorSel = @($sel | Where-Object { $_.IsThirdParty })
+    $pkgRefs = @($Refs | Where-Object { $want.Contains($_.ObjectName) })
     $sel = @($sel | Where-Object { -not $_.IsThirdParty })
 
     $pulled = Get-OrdinalSorted (@($sel | Where-Object { $_.PackageName -ne $name } |
@@ -319,6 +374,7 @@ function New-Package($Pkg, $Objs, $Migs) {
     if ($vendor.Count -gt 0) { $notes.Add('Vendor objects: ' + ($vendor -join ', ')) }
     if ($pulled.Count -gt 0) { $notes.Add('Pulled from other packages: ' + ($pulled -join ', ')) }
     if ($pkgMigs.Count -gt 0) { $notes.Add("Migrations: $($pkgMigs.Count) (run after the tables, before the views and procedures)") }
+    if ($pkgRefs.Count -gt 0) { $notes.Add("Reference data: $($pkgRefs.Count) tables (run after the views and procedures)") }
     $notes.Add('')
     $notes.AddRange([string[]]$RunNote)
 
@@ -338,6 +394,11 @@ function New-Package($Pkg, $Objs, $Migs) {
         $out.AddRange((Get-RLines @($sel | Where-Object { $_.ObjectType -ne 'Table' })))
     } else {
         $out.AddRange((Get-RLines $sel))
+    }
+    if ($pkgRefs.Count -gt 0) {
+        $out.Add('')
+        $out.Add("-- 11_reference_data ($($pkgRefs.Count))")
+        $out.AddRange((Get-RLines $pkgRefs))
     }
     $out.AddRange([string[]]@('', $MetaLine, ''))
     return ($out -join "`n")
@@ -477,12 +538,13 @@ $objs = $loaded[0]
 $pkgs = $loaded[1]
 $renameRows = Read-Csv $Renames
 $migs = Import-Migrations $objs
+$refs = Import-ReferenceData $objs
 
 Write-TextFile (Join-Path $Root 'tools\find_old_name_references.sql')  (New-FindReferences $renameRows)
-Write-TextFile (Join-Path $Root '09_deployment\deploy_all.sql')        (New-DeployAll $objs $migs)
+Write-TextFile (Join-Path $Root '09_deployment\deploy_all.sql')        (New-DeployAll $objs $migs $refs)
 Write-TextFile (Join-Path $Root '09_deployment\deploy_third_party.sql') (New-ThirdParty $objs)
 foreach ($p in $pkgs) {
-    Write-TextFile (Join-Path $Root "09_deployment\packages\$($p.ScriptName).sql") (New-Package $p $objs $migs)
+    Write-TextFile (Join-Path $Root "09_deployment\packages\$($p.ScriptName).sql") (New-Package $p $objs $migs $refs)
 }
 Write-TextFile (Join-Path $Root '10_metadata\apply_extended_properties.sql') (New-Metadata $objs)
 
@@ -492,5 +554,5 @@ if ($missingFiles.Count -gt 0) {
     throw ("Manifest points at missing files:`n  " + ($missingFiles -join "`n  "))
 }
 
-Write-Host "Generated deploy_all, deploy_third_party, $($pkgs.Count) package scripts and metadata for $($objs.Count) objects and $($migs.Count) migrations."
+Write-Host "Generated deploy_all, deploy_third_party, $($pkgs.Count) package scripts and metadata for $($objs.Count) objects, $($migs.Count) migrations and $($refs.Count) reference data scripts."
 

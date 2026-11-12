@@ -1,5 +1,5 @@
 ﻿-- ============================================================================
--- deploy_all.sql - full deployment: folders 00-06 in order, with 08_migrations run after 04_tables (idempotent, re-runnable).
+-- deploy_all.sql - full deployment: folders 00-06 in order, with 08_migrations run after 04_tables and 11_reference_data last (idempotent, re-runnable).
 -- Vendor code can also be deployed on its own with deploy_third_party.sql.
 -- ============================================================================
 -- Settings are supplied when you deploy, not stored in the repo (see 09_deployment\config.sql).
@@ -135,6 +135,10 @@ GO
 :r $(RepoRoot)\06_programmability\procedures\query\usp_Alert_LongRunningTransactions.sql
 :r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogUsage.sql
 :r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogGrowth.sql
+
+-- 11_reference_data (2 tables, run after the procedures so every table and migration is in place)
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_AcceptedRisk.sql
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_BaselineRule.sql
 
 -- 10_metadata
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql

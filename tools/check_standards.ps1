@@ -6,7 +6,7 @@
     Run from anywhere:  .\tools\check_standards.ps1
     Exit code 0 = no violations; 1 = violations (each printed as  path:line  RULE  message).
 
-    Checks 03_types, 04_tables, 05_views, 06_programmability and 08_migrations.
+    Checks 03_types, 04_tables, 05_views, 06_programmability, 08_migrations and 11_reference_data.
     02_third_party (vendor code, never edited) and the generated files are not checked.
 
     Rules
@@ -23,6 +23,8 @@
       SC009  Name prefixes: views vw_, procedures usp_, functions fn_, table types tvp_
       SC010  Migrations are named YYYYMMDD_NN_<ObjectName>_<Change>.sql and have the header
              lines "-- Migration : <file name>" and "-- Re-runnable:"
+      SC011  Reference data files are named after a table, MERGE into [dbo].[<file name>], contain
+             no CREATE, ALTER or DROP, and are listed in 10_metadata\reference_data_manifest.csv
       SC000  An entry in tools\standards_exceptions.csv no longer matches a violation (remove it)
 
     Known exceptions are listed in tools\standards_exceptions.csv (Rule,Path,Reason). They are
@@ -254,6 +256,46 @@ if (Test-Path $migDir) {
     }
 }
 
+# ---------------------------------------------------------------- reference data: SC003, SC007, SC011
+
+$refDir = Join-Path $Root '11_reference_data'
+$refManifest = Join-Path $Root '10_metadata\reference_data_manifest.csv'
+$refListed = @{}
+if (Test-Path $refManifest) {
+    foreach ($r in @(Import-Csv -Path $refManifest -Encoding UTF8)) { $refListed[$r.DataFile.Replace('\', '/')] = $r }
+}
+$refFiles = @()
+if (Test-Path $refDir) { $refFiles = @(Get-ChildItem -Path $refDir -Filter '*.sql' -Recurse -File) }
+foreach ($f in $refFiles) {
+    $sub  = $f.FullName.Substring($refDir.Length).TrimStart('\', '/').Replace('\', '/')
+    $rel  = '11_reference_data/' + $sub
+    $raw  = [System.IO.File]::ReadAllText($f.FullName)
+    $code = Get-CodeOnly $raw
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($f.Name)
+
+    foreach ($m in [regex]::Matches($code, '(?im)^\s*USE\s+\S')) {
+        Add-Violation 'SC003' $rel (Get-LineNumber $code $m.Index) 'USE statement. The database is chosen at deploy time'
+    }
+    foreach ($m in [regex]::Matches($code, '(?i)\bsp_(add|update|drop)extendedproperty\b')) {
+        Add-Violation 'SC007' $rel (Get-LineNumber $code $m.Index) 'Extended-property call. These come from 10_metadata\apply_extended_properties.sql'
+    }
+    foreach ($m in [regex]::Matches($code, '(?i)\b(CREATE|ALTER|DROP)\s+(TABLE|VIEW|PROC|PROCEDURE|FUNCTION|TRIGGER|INDEX|TYPE)\b')) {
+        Add-Violation 'SC011' $rel (Get-LineNumber $code $m.Index) "$($m.Value.ToUpper()) in a reference data file. Structure belongs in 04_tables or 08_migrations"
+    }
+    $merge = [regex]::Match($code, "(?i)\bMERGE\s+(?:INTO\s+)?$NamePattern")
+    if (-not $merge.Success) {
+        Add-Violation 'SC011' $rel 1 "No MERGE statement. Load the rows with MERGE [dbo].[$base] so the script is re-runnable"
+    } else {
+        $t = Split-ObjectName ($merge.Groups[1].Value + $merge.Groups[2].Value)
+        if ($t.Name -cne $base -or $t.Schema -ne 'dbo') {
+            Add-Violation 'SC011' $rel (Get-LineNumber $code $merge.Index) "MERGE targets [$($t.Schema)].[$($t.Name)] but the file is named $base.sql. Use MERGE [dbo].[$base]"
+        }
+    }
+    if (-not $refListed.ContainsKey($sub)) {
+        Add-Violation 'SC011' $rel 1 'Not in 10_metadata/reference_data_manifest.csv, so it is never deployed'
+    }
+}
+
 # ---------------------------------------------------------------- SC008: files and manifest agree
 
 $rows = @(Import-Csv -Path $Manifest -Encoding UTF8)
@@ -315,7 +357,7 @@ if ($excused.Count -gt 0) {
     Write-Host "Known exceptions (tools\standards_exceptions.csv): $($excused.Count) violation(s) in $(@($excused | Select-Object -ExpandProperty Path -Unique).Count) file(s)"
 }
 Write-Host ''
-Write-Host "Checked $($objectFiles.Count) object files and $(@(Get-ChildItem -Path $migDir -Filter '*.sql' -File -ErrorAction SilentlyContinue).Count) migrations: $($failing.Count) violation(s)."
+Write-Host "Checked $($objectFiles.Count) object files, $(@(Get-ChildItem -Path $migDir -Filter '*.sql' -File -ErrorAction SilentlyContinue).Count) migrations and $($refFiles.Count) reference data files: $($failing.Count) violation(s)."
 
 if ($failing.Count -gt 0) { exit 1 }
 exit 0
