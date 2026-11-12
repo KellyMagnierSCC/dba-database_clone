@@ -28,7 +28,7 @@ JOIN dbo.Scc_BaselineRule b
 LEFT JOIN dbo.Scc_AcceptedRisk ar
     ON ar.CheckID = f.CheckID
    AND (
-        (ar.ScopeType = 'Instance' AND ar.ScopeName = '<INSTANCE>')
+        (ar.ScopeType = 'Instance' AND ar.ScopeName = r.ServerName)   -- @@SERVERNAME recorded by usp_Run_Blitz
      OR (ar.ScopeType = 'Database' AND ar.ScopeName = f.DatabaseName)
     )
 WHERE

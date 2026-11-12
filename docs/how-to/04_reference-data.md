@@ -47,6 +47,16 @@ INSERT dbo.Scc_AcceptedRisk (CheckID, ScopeType, ScopeName, ApprovedBy, Approval
 VALUES (4, 'Login', N'DOMAIN\SomeLocalLogin', N'<approver>', '2026-11-12', '2027-11-12', N'<why>');
 ```
 
+`ScopeName` must hold exactly the value the compliance views compare it with:
+
+| `ScopeType` | `ScopeName` | Compared with |
+|---|---|---|
+| `Instance` | the server's `@@SERVERNAME`, e.g. `SQLPROD01` or `SQLPROD02\REPORTING` (include `\InstanceName` for a named instance) | `Blitz_Run.ServerName`, recorded by `usp_Run_Blitz` |
+| `Database` | the database name | `Blitz_Finding.DatabaseName` |
+| `Login` (CheckID 4) | the login, e.g. `DOMAIN\svc_account` | the login in the sp_Blitz finding |
+
+Copy the value from `SELECT @@SERVERNAME;` on the server rather than typing it: on a case-sensitive collation `sqlprod01` won't match `SQLPROD01`. Don't use the instance name on its own: every default instance is called `MSSQLSERVER`, so the exception would match on every server's default instance. `Instance` rows are specific to one server, so they always go in on the server (`IsStandard = 0`), never in `11_reference_data`.
+
 ## Changing the standard rows
 
 1. Edit the `VALUES` list in the file.
