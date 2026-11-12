@@ -28,7 +28,7 @@ JOIN dbo.Scc_HealthCheck_BaselineRule b
 LEFT JOIN dbo.Scc_HealthCheck_AcceptedRisk ar
     ON ar.CheckID = f.CheckID
    AND (
-        (ar.ScopeType = 'Instance' AND ar.ScopeName = '<INSTANCE>')
+        (ar.ScopeType = 'Instance' AND ar.ScopeName = r.ServerName)   -- @@SERVERNAME recorded by usp_Monitor_CaptureHealthCheck
      OR (ar.ScopeType = 'Database' AND ar.ScopeName = f.DatabaseName)
     )
 WHERE

@@ -12,6 +12,7 @@ CREATE TABLE [dbo].[Scc_HealthCheck_AcceptedRisk](
 	[ApprovalDate] [date] NOT NULL,
 	[ReviewByDate] [date] NOT NULL,
 	[Justification] [nvarchar](4000) NOT NULL,
+	[IsStandard] [bit] NOT NULL CONSTRAINT [DF_Scc_HealthCheck_AcceptedRisk_IsStandard] DEFAULT ((0)),
  CONSTRAINT [PK_Scc_HealthCheck_AcceptedRisk] PRIMARY KEY CLUSTERED 
 (
 	[CheckID] ASC,

@@ -21,7 +21,8 @@ Top-level folders are numbered in deployment order; the domain subfolders are fo
 07_jobs/            definitions/  alerts/  _pending_migration/
 08_migrations/                                   forward-only, dated structural change scripts
 09_deployment/      config.sql  local_deploy.example.sql  deploy_all.sql  deploy_third_party.sql  packages/
-10_metadata/        object_manifest.csv  packages.csv  migration_manifest.csv  rename_map.csv  apply_extended_properties.sql
+10_metadata/        object_manifest.csv  packages.csv  migration_manifest.csv  reference_data_manifest.csv  rename_map.csv  apply_extended_properties.sql
+11_reference_data/<domain>/                      standard rows loaded into tables (one MERGE per table), run last
 tools/              generate_deploy.ps1  check_standards.ps1  standards_exceptions.csv  find_old_name_references.sql  workload_metrics/  templates/
 docs/               design principles, naming conventions, domain guide, object naming reference, source control design
 .github/            issue and pull request templates, CODEOWNERS (DevOps Team reviews every change), workflows/standards.yml (checks every PR)
@@ -58,6 +59,8 @@ Tables are created only if missing; views and procedures use `CREATE OR ALTER`; 
 
 Changing an existing table needs a migration in `08_migrations/` - re-running `CREATE TABLE` does nothing. Migrations are listed in `10_metadata/migration_manifest.csv` and run by the deploy scripts after `04_tables` and before `05_views`; `deploy_all.sql` runs them all, a package script runs those for its tables. Each run is logged in `dbo.Migration_History`. See [docs/how-to/03](docs/how-to/03_changing-existing-objects-and-migrations.md).
 
+Standard rows that every server needs, such as the SCC baseline rules, are in `11_reference_data/`: one `MERGE` per table, listed in `10_metadata/reference_data_manifest.csv`. The deploy scripts run them after the procedures, and every run makes the standard rows match the repository. See [docs/how-to/04](docs/how-to/04_reference-data.md).
+
 ## Metadata
 
 `10_metadata/object_manifest.csv` is the source of truth for placement and ordering; `apply_extended_properties.sql` stamps it onto the objects so the live database can be audited against the repo. Each table, view and procedure carries:
@@ -83,6 +86,7 @@ New to this repository? Start with [CONTRIBUTING.md](CONTRIBUTING.md), which cov
 - [Adding a new object to an existing package](docs/how-to/02_adding-objects-to-a-package.md)
 - [Starter templates for tables, views, procedures and migrations](tools/templates/README.md)
 - [Changing existing objects and using `08_migrations`](docs/how-to/03_changing-existing-objects-and-migrations.md), with a worked example of adding a column
+- [Deploying standard rows with `11_reference_data`](docs/how-to/04_reference-data.md)
 - Pull request templates for each change type are in [`.github/PULL_REQUEST_TEMPLATE/`](.github/PULL_REQUEST_TEMPLATE/). Pick one by adding `template=table_migration.md` (etc.) to the address of the pull request page: `&template=…` if it already contains `?expand=1` (as it does from GitHub Desktop), otherwise `?template=…`.
 
 ## Known deviations from the documents
