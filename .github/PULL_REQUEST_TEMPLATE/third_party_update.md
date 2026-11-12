@@ -25,7 +25,7 @@ Closes #<!-- issue number: links this PR to the issue and closes the issue when 
 
 | Our object | Uses | Checked? |
 |---|---|---|
-| `usp_Run_Blitz` | `sp_Blitz` | |
+| `usp_Monitor_CaptureHealthCheck` | `sp_Blitz` | |
 | <!-- WhoIsActive capture procs / tables --> | `sp_WhoIsActive` output columns | |
 | <!-- Agent jobs --> | Ola `DatabaseBackup` / `IndexOptimize` / `DatabaseIntegrityCheck` parameters | |
 
