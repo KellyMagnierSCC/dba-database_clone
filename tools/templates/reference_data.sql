@@ -15,7 +15,7 @@
 --        IsStandard bit NOT NULL CONSTRAINT [DF_<Table>_IsStandard] DEFAULT ((0))
 --      column, set IsStandard = 1 in the INSERT and UPDATE, and use
 --        WHEN NOT MATCHED BY SOURCE AND t.IsStandard = 1 THEN DELETE
---      See 11_reference_data/blitz_scc/Scc_AcceptedRisk.sql for a worked example.
+--      See 11_reference_data/blitz_scc/Scc_HealthCheck_AcceptedRisk.sql for a worked example.
 -- ============================================================================
 -- Reference data: dbo.Domain_Thing_Lookup
 -- <What the rows are for, and which views or procedures read them>

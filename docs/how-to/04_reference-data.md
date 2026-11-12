@@ -1,6 +1,6 @@
 # How to deploy standard rows with `11_reference_data`
 
-Some tables hold configuration rather than history: the rows say *how the framework should behave*, and they should be the same on every server. `Scc_BaselineRule` (which sp_Blitz checks are mandatory) is one. These rows are kept in the repository and loaded by the same deploy scripts that create the tables.
+Some tables hold configuration rather than history: the rows say *how the framework should behave*, and they should be the same on every server. `Scc_HealthCheck_BaselineRule` (which sp_Blitz checks are mandatory) is one. These rows are kept in the repository and loaded by the same deploy scripts that create the tables.
 
 - **`04_tables/`** defines the table's **structure**.
 - **`11_reference_data/`** defines the table's **standard rows**.
@@ -10,7 +10,7 @@ Some tables hold configuration rather than history: the rows say *how the framew
 Each file in `11_reference_data/<domain>/` is named after the table it loads and contains one `MERGE` statement. The rows are written out in a `VALUES` list:
 
 ```sql
-MERGE [dbo].[Scc_BaselineRule] AS t
+MERGE [dbo].[Scc_HealthCheck_BaselineRule] AS t
 USING (VALUES
     (1, 'Backups', 'Mandatory', 'Database', 'DBA', N'Databases must have recent backups'),
     ...
@@ -29,13 +29,13 @@ The deploy scripts run reference data **last**, after the procedures and before 
 
 ## Tables owned by the repository, and tables shared with each server
 
-**The repository owns the whole table** (`Scc_BaselineRule`): every row comes from the file, so the MERGE deletes any row that isn't in it. Rows added by hand on a server are removed at the next deployment.
+**The repository owns the whole table** (`Scc_HealthCheck_BaselineRule`): every row comes from the file, so the MERGE deletes any row that isn't in it. Rows added by hand on a server are removed at the next deployment.
 
-**The table also holds rows added on each server** (`Scc_AcceptedRisk`): the standard accepted risks (the approved sysadmin logins) come from the repository, but a server can have its own as well. The table has an `IsStandard` column:
+**The table also holds rows added on each server** (`Scc_HealthCheck_AcceptedRisk`): the standard accepted risks (the approved sysadmin logins) come from the repository, but a server can have its own as well. The table has an `IsStandard` column:
 
 | `IsStandard` | Row comes from | The deployment |
 |---|---|---|
-| `1` | `11_reference_data/blitz_scc/Scc_AcceptedRisk.sql` | adds, changes and deletes it to match the file |
+| `1` | `11_reference_data/blitz_scc/Scc_HealthCheck_AcceptedRisk.sql` | adds, changes and deletes it to match the file |
 | `0` (the default) | added on the server | never changes or deletes it |
 
 The MERGE deletes only rows with `IsStandard = 1`. If a server already has a local row with the same key as a standard row, the deployment takes it over and sets `IsStandard = 1`.
@@ -43,7 +43,7 @@ The MERGE deletes only rows with `IsStandard = 1`. If a server already has a loc
 Add server-specific accepted risks directly on the server, without `IsStandard`:
 
 ```sql
-INSERT dbo.Scc_AcceptedRisk (CheckID, ScopeType, ScopeName, ApprovedBy, ApprovalDate, ReviewByDate, Justification)
+INSERT dbo.Scc_HealthCheck_AcceptedRisk (CheckID, ScopeType, ScopeName, ApprovedBy, ApprovalDate, ReviewByDate, Justification)
 VALUES (4, 'Login', N'DOMAIN\SomeLocalLogin', N'<approver>', '2026-11-12', '2027-11-12', N'<why>');
 ```
 
@@ -51,8 +51,8 @@ VALUES (4, 'Login', N'DOMAIN\SomeLocalLogin', N'<approver>', '2026-11-12', '2027
 
 | `ScopeType` | `ScopeName` | Compared with |
 |---|---|---|
-| `Instance` | the server's `@@SERVERNAME`, e.g. `SQLPROD01` or `SQLPROD02\REPORTING` (include `\InstanceName` for a named instance) | `Blitz_Run.ServerName`, recorded by `usp_Run_Blitz` |
-| `Database` | the database name | `Blitz_Finding.DatabaseName` |
+| `Instance` | the server's `@@SERVERNAME`, e.g. `SQLPROD01` or `SQLPROD02\REPORTING` (include `\InstanceName` for a named instance) | `HealthCheck_Run.ServerName`, recorded by `usp_Monitor_CaptureHealthCheck` |
+| `Database` | the database name | `HealthCheck_Finding.DatabaseName` |
 | `Login` (CheckID 4) | the login, e.g. `DOMAIN\svc_account` | the login in the sp_Blitz finding |
 
 Copy the value from `SELECT @@SERVERNAME;` on the server rather than typing it: on a case-sensitive collation `sqlprod01` won't match `SQLPROD01`. Don't use the instance name on its own: every default instance is called `MSSQLSERVER`, so the exception would match on every server's default instance. `Instance` rows are specific to one server, so they always go in on the server (`IsStandard = 0`), never in `11_reference_data`.

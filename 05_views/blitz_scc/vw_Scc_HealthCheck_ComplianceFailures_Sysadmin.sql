@@ -3,7 +3,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER VIEW [dbo].[vw_Scc_ComplianceFailures_Sysadmin]
+CREATE OR ALTER VIEW [dbo].[vw_Scc_HealthCheck_ComplianceFailures_Sysadmin]
 AS
 SELECT
     r.ServerName,
@@ -12,7 +12,7 @@ SELECT
 
     f.CheckID,
     f.Finding,
-    -- Extract login name from Blitz description
+    -- Extract login name from the sp_Blitz finding details
     SUBSTRING(
         f.Details,
         CHARINDEX('[', f.Details) + 1,
@@ -22,10 +22,10 @@ SELECT
     'Security' AS BaselineDomain,
     'DBA' AS OwnerTeam,
     'FAIL' AS ComplianceState
-FROM dbo.vw_Blitz_LatestFindings f
-JOIN dbo.vw_Blitz_LatestRun r
-    ON f.BlitzRunID = r.BlitzRunID
-LEFT JOIN dbo.Scc_AcceptedRisk ar
+FROM dbo.vw_HealthCheck_LatestFindings f
+JOIN dbo.vw_HealthCheck_LatestRun r
+    ON f.HealthCheckRunID = r.HealthCheckRunID
+LEFT JOIN dbo.Scc_HealthCheck_AcceptedRisk ar
     ON  ar.CheckID   = 4
     AND ar.ScopeName =
         SUBSTRING(

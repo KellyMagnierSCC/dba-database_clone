@@ -2,7 +2,7 @@
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE OR ALTER VIEW [dbo].[vw_Scc_ComplianceFailures_Mandatory]
+CREATE OR ALTER VIEW [dbo].[vw_Scc_HealthCheck_ComplianceFailures_Mandatory]
 AS
 SELECT
     r.ServerName,
@@ -20,15 +20,15 @@ SELECT
     b.BaselineDomain,
     b.OwnerTeam,
     'FAIL' AS ComplianceState
-FROM dbo.vw_Blitz_LatestFindings f
-JOIN dbo.vw_Blitz_LatestRun r
-    ON f.BlitzRunID = r.BlitzRunID
-JOIN dbo.Scc_BaselineRule b
+FROM dbo.vw_HealthCheck_LatestFindings f
+JOIN dbo.vw_HealthCheck_LatestRun r
+    ON f.HealthCheckRunID = r.HealthCheckRunID
+JOIN dbo.Scc_HealthCheck_BaselineRule b
     ON f.CheckID = b.CheckID
-LEFT JOIN dbo.Scc_AcceptedRisk ar
+LEFT JOIN dbo.Scc_HealthCheck_AcceptedRisk ar
     ON ar.CheckID = f.CheckID
    AND (
-        (ar.ScopeType = 'Instance' AND ar.ScopeName = r.ServerName)   -- @@SERVERNAME recorded by usp_Run_Blitz
+        (ar.ScopeType = 'Instance' AND ar.ScopeName = r.ServerName)   -- @@SERVERNAME recorded by usp_Monitor_CaptureHealthCheck
      OR (ar.ScopeType = 'Database' AND ar.ScopeName = f.DatabaseName)
     )
 WHERE

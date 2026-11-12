@@ -64,7 +64,17 @@ INSERT @Old (OldName) VALUES
     (N'WhoIsActive_BlockingData'),
     (N'WhoIsActive_BlockingTree'),
     (N'usp_WhoIsActive_ActivityData'),
-    (N'usp_WhoIsActive_BlockingData');
+    (N'usp_WhoIsActive_BlockingData'),
+    (N'Blitz_Run'),
+    (N'Blitz_Finding'),
+    (N'Blitz_Finding_Stage'),
+    (N'Scc_BaselineRule'),
+    (N'Scc_AcceptedRisk'),
+    (N'vw_Blitz_LatestRun'),
+    (N'vw_Blitz_LatestFindings'),
+    (N'vw_Scc_ComplianceFailures_Mandatory'),
+    (N'vw_Scc_ComplianceFailures_Sysadmin'),
+    (N'usp_Run_Blitz');
 
 SELECT 'AgentJobStep' AS FoundIn, j.name AS JobName, s.step_id, s.step_name, o.OldName
 FROM msdb.dbo.sysjobsteps AS s

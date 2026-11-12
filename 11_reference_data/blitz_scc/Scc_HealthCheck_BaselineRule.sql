@@ -1,16 +1,16 @@
 ﻿-- ============================================================================
--- Reference data: dbo.Scc_BaselineRule
+-- Reference data: dbo.Scc_HealthCheck_BaselineRule
 -- The standard set of sp_Blitz checks the SCC compliance views report on. The same on every
 -- server, and the repository is authoritative: each deployment makes the table match this list
 -- exactly. Rows are added, changed AND deleted, so a rule removed here is removed everywhere.
 -- To change a rule, edit the VALUES list below and deploy. Re-runnable.
--- Read by: vw_Scc_ComplianceFailures_Mandatory
+-- Read by: vw_Scc_HealthCheck_ComplianceFailures_Mandatory
 -- ============================================================================
 SET NOCOUNT ON;
 
 DECLARE @Changes TABLE (Action nvarchar(10) NOT NULL);
 
-MERGE [dbo].[Scc_BaselineRule] AS t
+MERGE [dbo].[Scc_HealthCheck_BaselineRule] AS t
 USING (VALUES
     -- CheckID, BaselineDomain, RequiredState, AppliesTo, OwnerTeam, Notes
     (1,   'Backups',         'Mandatory', 'Database',  'DBA',    N'Databases must have recent backups'),
@@ -54,7 +54,7 @@ WHEN NOT MATCHED BY SOURCE
     THEN DELETE
 OUTPUT $action INTO @Changes (Action);
 
-PRINT CONCAT(N'Scc_BaselineRule: ',
+PRINT CONCAT(N'Scc_HealthCheck_BaselineRule: ',
              (SELECT COUNT(*) FROM @Changes WHERE Action = N'INSERT'), N' inserted, ',
              (SELECT COUNT(*) FROM @Changes WHERE Action = N'UPDATE'), N' updated, ',
              (SELECT COUNT(*) FROM @Changes WHERE Action = N'DELETE'), N' deleted.');

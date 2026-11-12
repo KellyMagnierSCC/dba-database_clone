@@ -33,9 +33,9 @@ GO
 
 -- 04_tables (24 objects)
 :r $(RepoRoot)\04_tables\infrastructure\Migration_History.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding_Stage.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Run.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Blitz_Finding.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Finding_Stage.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Run.sql
+:r $(RepoRoot)\04_tables\blitz_scc\HealthCheck_Finding.sql
 :r $(RepoRoot)\04_tables\cpu\CPU_Utilisation_History.sql
 :r $(RepoRoot)\04_tables\filestat\FileStat_Database_History.sql
 :r $(RepoRoot)\04_tables\filestat\FileStat_Drive_History.sql
@@ -46,8 +46,8 @@ GO
 :r $(RepoRoot)\04_tables\activity\Activity_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Session_History.sql
 :r $(RepoRoot)\04_tables\blocking\Blocking_Tree_History.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Scc_AcceptedRisk.sql
-:r $(RepoRoot)\04_tables\blitz_scc\Scc_BaselineRule.sql
+:r $(RepoRoot)\04_tables\blitz_scc\Scc_HealthCheck_AcceptedRisk.sql
+:r $(RepoRoot)\04_tables\blitz_scc\Scc_HealthCheck_BaselineRule.sql
 :r $(RepoRoot)\04_tables\waitstats\WaitStats_Capture_History.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestQueries.sql
 :r $(RepoRoot)\04_tables\workload_metrics\WorkloadMetricsTestRuns.sql
@@ -63,8 +63,8 @@ GO
 :r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockedSessionCount_Last5Runs.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_SessionsOver60Min_LastCollection.sql
 :r $(RepoRoot)\05_views\activity\vw_ActivityMonitor_Sessions_LastCollection.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestRun.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Blitz_LatestFindings.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_HealthCheck_LatestRun.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_HealthCheck_LatestFindings.sql
 :r $(RepoRoot)\05_views\blocking\vw_BlockingMonitor_BlockingTree_LastCollection.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_HighUsage_Now.sql
 :r $(RepoRoot)\05_views\cpu\vw_CPU_History_15minute_Interval.sql
@@ -104,8 +104,8 @@ GO
 :r $(RepoRoot)\05_views\rcsi\vw_RCSI_TempdbUsage.sql
 :r $(RepoRoot)\05_views\rcsi\vw_RCSI_VersionStoreUsage.sql
 :r $(RepoRoot)\05_views\rcsi\vw_RCSI_VersionStore_Sessions.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Mandatory.sql
-:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_ComplianceFailures_Sysadmin.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_HealthCheck_ComplianceFailures_Mandatory.sql
+:r $(RepoRoot)\05_views\blitz_scc\vw_Scc_HealthCheck_ComplianceFailures_Sysadmin.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_BenignWaits.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Current.sql
 :r $(RepoRoot)\05_views\waitstats\vw_WaitStats_Captures.sql
@@ -128,7 +128,7 @@ GO
 :r $(RepoRoot)\06_programmability\procedures\filestat\usp_Monitor_CaptureFileStats.sql
 :r $(RepoRoot)\06_programmability\procedures\rcsi\usp_Monitor_CaptureRCSISnapshot.sql
 :r $(RepoRoot)\06_programmability\procedures\waitstats\usp_Monitor_CaptureWaitStats.sql
-:r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Run_Blitz.sql
+:r $(RepoRoot)\06_programmability\procedures\blitz_scc\usp_Monitor_CaptureHealthCheck.sql
 :r $(RepoRoot)\06_programmability\procedures\activity\usp_Monitor_CaptureActivity.sql
 :r $(RepoRoot)\06_programmability\procedures\blocking\usp_Monitor_CaptureBlocking.sql
 :r $(RepoRoot)\06_programmability\procedures\cpu\usp_Alert_HighCpu.sql
@@ -137,8 +137,8 @@ GO
 :r $(RepoRoot)\06_programmability\procedures\instance\usp_Monitor_CaptureLogGrowth.sql
 
 -- 11_reference_data (2 tables, run after the procedures so every table and migration is in place)
-:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_AcceptedRisk.sql
-:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_BaselineRule.sql
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_HealthCheck_AcceptedRisk.sql
+:r $(RepoRoot)\11_reference_data\blitz_scc\Scc_HealthCheck_BaselineRule.sql
 
 -- 10_metadata
 :r $(RepoRoot)\10_metadata\apply_extended_properties.sql
